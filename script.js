@@ -11,7 +11,7 @@
 
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
-  const compactNavBreakpoint = 860;
+  const compactNavBreakpoint = 700;
 
   function setNavOpen(open) {
     if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
