@@ -4,8 +4,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="NDIS Carer provides compassionate nursing care and disability support services in Hurstville, NSW. Contact us for support and referrals.">
+  <meta name="theme-color" content="#1d8ed1">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="NDIS Carer | Greater Sydney NDIS Nursing Care Provider">
+  <meta property="og:description" content="Compassionate nursing care and disability support services in Hurstville, NSW.">
+  <meta property="og:url" content="https://strllan.github.io/ndis-care-website/">
+  <meta property="og:image" content="assets/logo.png">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NDIS Carer | Greater Sydney NDIS Nursing Care Provider">
+  <meta name="twitter:description" content="Compassionate nursing care and disability support services in Hurstville, NSW.">
   <title>NDIS Carer | Greater Sydney NDIS Nursing Care Provider</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="canonical" href="https://strllan.github.io/ndis-care-website/">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MedicalBusiness",
+      "name": "NDIS Carer",
+      "url": "https://strllan.github.io/ndis-care-website/",
+      "telephone": "+61-406-618-128",
+      "email": "admin@ndiscarer.com",
+      "areaServed": "Greater Sydney",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hurstville",
+        "addressRegion": "NSW",
+        "addressCountry": "AU"
+      }
+    }
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -41,7 +69,18 @@
         </span>
       </a>
 
-      <nav class="site-nav" aria-label="Main navigation">
+      <button
+        type="button"
+        class="nav-toggle"
+        id="nav-toggle"
+        aria-expanded="false"
+        aria-controls="site-nav"
+        aria-label="Open navigation menu"
+      >
+        Menu
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
         <a href="#services">Services</a>
         <a href="#about">About</a>
         <a href="#rights">Rights</a>
@@ -252,6 +291,15 @@
             <button class="button" type="submit" aria-describedby="referral-help">Submit Referral</button>
           </div>
           <p id="referral-status" class="form-status" role="status" aria-live="polite"></p>
+          <details id="email-fallback" class="email-fallback" hidden>
+            <summary>Email app did not open? Use this fallback</summary>
+            <p>
+              Copy the details below and email them to
+              <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a>.
+            </p>
+            <textarea id="referral-preview" readonly aria-label="Referral details to copy"></textarea>
+            <button type="button" class="button button--ghost button--small" id="copy-referral-details">Copy Referral Details</button>
+          </details>
         </form>
       </div>
     </section>

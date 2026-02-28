@@ -1,10 +1,56 @@
 (function () {
+  document.documentElement.classList.add("has-js");
+
   const body = document.body;
   const root = document.documentElement;
 
   const yearEl = document.getElementById("current-year");
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
+  }
+
+  const navToggle = document.getElementById("nav-toggle");
+  const siteNav = document.getElementById("site-nav");
+
+  function setNavOpen(open) {
+    if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
+      return;
+    }
+    siteNav.classList.toggle("is-open", open);
+    navToggle.setAttribute("aria-expanded", String(open));
+    navToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+  }
+
+  if (navToggle instanceof HTMLButtonElement && siteNav instanceof HTMLElement) {
+    navToggle.addEventListener("click", function () {
+      const nextOpen = !siteNav.classList.contains("is-open");
+      setNavOpen(nextOpen);
+    });
+
+    siteNav.querySelectorAll("a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        setNavOpen(false);
+      });
+    });
+
+    document.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (siteNav.contains(target) || navToggle.contains(target)) return;
+      setNavOpen(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" && siteNav.classList.contains("is-open")) {
+        setNavOpen(false);
+      }
+    });
+
+    window.addEventListener("resize", function () {
+      if (window.innerWidth > 800 && siteNav.classList.contains("is-open")) {
+        setNavOpen(false);
+      }
+    });
   }
 
   const a11yToggle = document.getElementById("a11y-toggle");
@@ -174,11 +220,35 @@
 
   const referralForm = document.getElementById("referral-form");
   const referralStatus = document.getElementById("referral-status");
+  const emailFallback = document.getElementById("email-fallback");
+  const referralPreview = document.getElementById("referral-preview");
+  const copyReferralDetails = document.getElementById("copy-referral-details");
 
   function setReferralStatus(message, isError) {
     if (!referralStatus) return;
     referralStatus.textContent = message;
     referralStatus.style.color = isError ? "#b02020" : "";
+  }
+
+  async function copyReferralText() {
+    if (!(referralPreview instanceof HTMLTextAreaElement)) return;
+    const text = referralPreview.value.trim();
+    if (!text) return;
+
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        referralPreview.focus();
+        referralPreview.select();
+        document.execCommand("copy");
+      }
+      setReferralStatus("Referral details copied. You can now paste them into your email.", false);
+    } catch (_error) {
+      referralPreview.focus();
+      referralPreview.select();
+      setReferralStatus("Could not copy automatically. Select the text and copy manually.", true);
+    }
   }
 
   function getFormValue(form, name) {
@@ -238,15 +308,34 @@
         `NDIS Number: ${values.ndisNumber || "N/A"}`,
         `Message: ${values.referralMessage || "N/A"}`
       ];
+      const bodyText = bodyLines.join("\n");
 
       const mailtoUrl =
         "mailto:admin@ndiscarer.com?subject=" +
         encodeURIComponent(subject) +
         "&body=" +
-        encodeURIComponent(bodyLines.join("\n"));
+        encodeURIComponent(bodyText);
 
-      setReferralStatus("Opening your email app to send the referral...");
+      if (emailFallback instanceof HTMLDetailsElement) {
+        emailFallback.hidden = false;
+        emailFallback.open = true;
+      }
+
+      if (referralPreview instanceof HTMLTextAreaElement) {
+        referralPreview.value = `Subject: ${subject}\n\n${bodyText}`;
+      }
+
+      setReferralStatus(
+        "Opening your email app. If nothing opens, use the fallback panel to copy and send manually.",
+        false
+      );
       window.location.href = mailtoUrl;
+    });
+  }
+
+  if (copyReferralDetails instanceof HTMLButtonElement) {
+    copyReferralDetails.addEventListener("click", function () {
+      copyReferralText();
     });
   }
 })();
