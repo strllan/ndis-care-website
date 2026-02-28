@@ -246,9 +246,16 @@ img {
   white-space: nowrap;
 }
 
-.site-nav a:hover,
-.site-nav a:focus-visible {
+.site-nav a:not(.button):hover,
+.site-nav a:not(.button):focus-visible {
   background: #eaf4fd;
+}
+
+.site-nav__cta {
+  margin-left: 0.35rem;
+  font-size: 0.94rem;
+  padding: 0.56rem 1rem;
+  white-space: nowrap;
 }
 
 .site-nav__referral {
@@ -817,6 +824,11 @@ img {
     padding: 0.35rem 0.52rem;
     font-size: 0.88rem;
   }
+
+  .site-nav__cta {
+    padding: 0.48rem 0.85rem;
+    font-size: 0.86rem;
+  }
 }
 
 @media (max-width: 700px) {
@@ -873,6 +885,10 @@ img {
     white-space: normal;
     border: 1px solid var(--border);
     background: #ffffff;
+  }
+
+  .site-nav__cta {
+    display: none;
   }
 
   .site-nav a.site-nav__referral {
