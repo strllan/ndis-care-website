@@ -256,6 +256,12 @@ img {
   font-size: 0.94rem;
   padding: 0.56rem 1rem;
   white-space: nowrap;
+  color: #ffffff;
+}
+
+.site-nav__cta:hover,
+.site-nav__cta:focus-visible {
+  color: #ffffff;
 }
 
 .site-nav__referral {
