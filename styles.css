@@ -255,6 +255,11 @@ img {
   background: #eaf4fd;
 }
 
+.site-nav a[aria-current="page"]:not(.button) {
+  background: #eaf4fd;
+  color: var(--primary-strong);
+}
+
 .site-nav a.site-nav__cta {
   margin-left: 0.35rem;
   font-size: 0.92rem;
@@ -269,6 +274,11 @@ img {
 
 .site-nav a.site-nav__cta:hover,
 .site-nav a.site-nav__cta:focus-visible {
+  color: #ffffff;
+  background: linear-gradient(135deg, #40b7db, #1684c7);
+}
+
+.site-nav a.site-nav__cta[aria-current="page"] {
   color: #ffffff;
   background: linear-gradient(135deg, #40b7db, #1684c7);
 }
