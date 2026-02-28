@@ -529,6 +529,11 @@ img {
   gap: 1rem;
 }
 
+.about-grid--balanced,
+.complaints-grid {
+  align-items: stretch;
+}
+
 .info-panel {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -539,6 +544,39 @@ img {
 
 .info-panel h3 {
   margin-top: 0;
+}
+
+.info-panel--tight,
+.complaints-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem 1rem;
+}
+
+.info-panel--tight h2,
+.complaints-panel h2 {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.45rem);
+  line-height: 1.15;
+}
+
+.info-panel--tight p,
+.complaints-panel p {
+  margin: 0 0 0.65rem;
+}
+
+.info-panel--tight ul,
+.complaints-panel ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.info-panel--tight p:last-child,
+.complaints-panel p:last-child {
+  margin-bottom: 0;
 }
 
 .tick-list {
