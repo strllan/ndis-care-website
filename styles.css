@@ -363,6 +363,10 @@ img {
   align-items: start;
 }
 
+.hero__inner--home {
+  grid-template-columns: 1fr;
+}
+
 .hero__content,
 .hero__card {
   background: rgba(255, 255, 255, 0.82);
@@ -377,10 +381,15 @@ img {
 
 .hero__card {
   padding: 1.05rem;
+  max-width: 38rem;
 }
 
 .hero__card h2 {
   margin-top: 0;
+}
+
+.home-explore {
+  margin-top: 0.3rem;
 }
 
 .hero__lead {
