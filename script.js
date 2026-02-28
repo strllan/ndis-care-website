@@ -13,15 +13,6 @@
   const siteNav = document.getElementById("site-nav");
   const compactNavBreakpoint = 860;
 
-  function updateNavCompactMode() {
-    if (!(siteNav instanceof HTMLElement)) return;
-    const shouldCompact = window.innerWidth <= compactNavBreakpoint;
-    root.classList.toggle("nav-compact", shouldCompact);
-    if (!shouldCompact) {
-      setNavOpen(false);
-    }
-  }
-
   function setNavOpen(open) {
     if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
       return;
@@ -57,7 +48,9 @@
     });
 
     window.addEventListener("resize", function () {
-      updateNavCompactMode();
+      if (window.innerWidth > compactNavBreakpoint) {
+        setNavOpen(false);
+      }
     });
   }
 
@@ -162,7 +155,7 @@
 
   loadState();
   applyA11yState();
-  updateNavCompactMode();
+  setNavOpen(false);
 
   if (a11yToggle) {
     a11yToggle.addEventListener("click", function () {
