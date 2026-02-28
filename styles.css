@@ -13,7 +13,7 @@
   --shadow: 0 10px 30px rgba(10, 40, 66, 0.09);
   --radius: 1rem;
   --radius-lg: 1.4rem;
-  --header-offset: 4.2rem;
+  --header-offset: 5rem;
 }
 
 *,
@@ -113,16 +113,16 @@ img {
 .top-bar {
   background: #dff0ff;
   border-bottom: 1px solid #bcd8ef;
-  font-size: 0.9rem;
+  font-size: 0.78rem;
 }
 
 .top-bar__inner {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem 1rem;
+  gap: 0.35rem 0.9rem;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 0;
+  justify-content: flex-start;
+  padding: 0.28rem 0;
 }
 
 .top-bar__item {
@@ -134,17 +134,7 @@ img {
 
 .top-bar__item a {
   text-decoration: none;
-  font-weight: 600;
-}
-
-.top-bar__badge {
-  margin: 0;
-  padding: 0.25rem 0.55rem;
-  border-radius: 999px;
-  background: #ffffff;
-  border: 1px solid #c8dced;
   font-weight: 700;
-  color: #2d3a48;
 }
 
 .site-header {
@@ -159,25 +149,25 @@ img {
 .site-header__inner {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.7rem 0.95rem;
   justify-content: space-between;
-  padding: 0.55rem 0;
+  padding: 0.62rem 0;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
   color: inherit;
   text-decoration: none;
   min-width: 0;
-  flex: 1 1 20rem;
+  flex: 1 1 18rem;
 }
 
 .brand__logo {
-  width: 2.9rem;
-  height: 2.9rem;
+  width: 3.1rem;
+  height: 3.1rem;
   border-radius: 0.75rem;
   background: #ffffff;
   border: 1px solid var(--border);
@@ -203,39 +193,66 @@ img {
 
 .brand__text {
   display: grid;
+  gap: 0.1rem;
 }
 
 .brand__name {
   font-weight: 800;
-  font-size: 0.96rem;
+  font-size: clamp(1.65rem, 2.4vw, 2.05rem);
+  line-height: 1;
 }
 
 .brand__legal {
   color: var(--muted);
-  font-size: 0.72rem;
+  font-size: 0.92rem;
 }
 
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 0.35rem;
-  flex-wrap: wrap;
+  gap: 0.2rem;
+  flex-wrap: nowrap;
   justify-content: flex-end;
   min-width: 0;
-  flex: 1 1 30rem;
+  flex: 1 1 auto;
 }
 
 .site-nav a {
   text-decoration: none;
   color: var(--text);
-  padding: 0.38rem 0.6rem;
+  padding: 0.4rem 0.65rem;
   border-radius: 0.55rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 0.94rem;
+  white-space: nowrap;
 }
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
   background: #eaf4fd;
+}
+
+.site-nav__referral {
+  display: none;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+
+.header-badge {
+  margin: 0;
+  padding: 0.36rem 0.8rem;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #c8dced;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #24384d;
+  white-space: nowrap;
 }
 
 .nav-toggle {
@@ -259,12 +276,39 @@ img {
   --header-offset: 7.2rem;
 }
 
+.nav-compact .site-header__inner {
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.nav-compact .brand {
+  flex: 1 1 100%;
+}
+
+.nav-compact .brand__name {
+  font-size: clamp(1.2rem, 5.5vw, 1.45rem);
+}
+
+.nav-compact .brand__legal {
+  font-size: 0.82rem;
+}
+
+.nav-compact .header-right {
+  width: 100%;
+  justify-content: space-between;
+}
+
 .nav-compact .nav-toggle {
   display: inline-flex;
-  margin-left: auto;
+}
+
+.nav-compact .header-badge {
+  font-size: 0.78rem;
+  padding: 0.28rem 0.62rem;
 }
 
 .nav-compact .site-nav {
+  order: 3;
   width: 100%;
   overflow: visible;
   flex-direction: column;
@@ -285,6 +329,22 @@ img {
   white-space: normal;
   border: 1px solid var(--border);
   background: #ffffff;
+}
+
+.nav-compact .site-nav__referral {
+  display: inline-flex;
+  border: 0;
+  background: linear-gradient(135deg, var(--accent), var(--primary));
+  color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 8px 18px rgba(29, 142, 209, 0.22);
+}
+
+.nav-compact .site-nav__referral:hover,
+.nav-compact .site-nav__referral:focus-visible {
+  color: #ffffff;
+  background: linear-gradient(135deg, #35b3db, #1482c8);
 }
 
 .button {
@@ -808,19 +868,7 @@ img {
 
 @media (max-width: 62rem) {
   :root {
-    --header-offset: 6.2rem;
-  }
-
-  .top-bar__inner {
-    justify-content: flex-start;
-  }
-
-  .site-header__inner {
-    align-items: flex-start;
-  }
-
-  .site-nav {
-    justify-content: flex-start;
+    --header-offset: 5.8rem;
   }
 }
 

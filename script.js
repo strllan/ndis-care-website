@@ -11,18 +11,11 @@
 
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
-  const compactNavBreakpoint = 992;
-
-  function getCurrentScale() {
-    const inlineScale = Number.parseFloat(root.style.getPropertyValue("--font-scale"));
-    if (Number.isFinite(inlineScale)) return inlineScale;
-    const computedScale = Number.parseFloat(getComputedStyle(root).getPropertyValue("--font-scale"));
-    return Number.isFinite(computedScale) ? computedScale : 1;
-  }
+  const compactNavBreakpoint = 860;
 
   function updateNavCompactMode() {
     if (!(siteNav instanceof HTMLElement)) return;
-    const shouldCompact = window.innerWidth <= compactNavBreakpoint || getCurrentScale() > 0.95;
+    const shouldCompact = window.innerWidth <= compactNavBreakpoint;
     root.classList.toggle("nav-compact", shouldCompact);
     if (!shouldCompact) {
       setNavOpen(false);
@@ -154,7 +147,6 @@
     setPressed("toggle-underline-links", state.underlineLinks);
     setPressed("toggle-readable-font", state.readableFont);
     setPressed("toggle-reduce-motion", state.reduceMotion);
-    updateNavCompactMode();
   }
 
   function resetA11yState() {
