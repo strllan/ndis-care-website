@@ -21,10 +21,22 @@
           <div class="section__heading">
             <p class="eyebrow">Referrals</p>
             <h1 id="referrals-title">Submit a referral enquiry</h1>
-            <p>Fill in the referral form below. Pressing submit opens your email app with details prepared for <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a>.</p>
+            <p>Fill in the referral form below. When you submit, details are sent directly to <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a>.</p>
           </div>
 
-          <form id="referral-form" class="referral-form" novalidate>
+          <form id="referral-form" class="referral-form" method="POST" action="https://formsubmit.co/admin@ndiscarer.com" data-direct-submit="true">
+            <input type="hidden" name="_subject" value="New NDIS Carer Referral Enquiry">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://strllan.github.io/ndis-care-website/referral/thanks/">
+            <input
+              type="text"
+              name="_honey"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+              style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;"
+            >
             <fieldset class="form-card">
               <legend>Participant details</legend>
               <div class="form-grid">
@@ -62,16 +74,10 @@
             </fieldset>
 
             <div class="form-actions">
-              <p class="muted" id="referral-help">Required fields are marked with an asterisk. This form currently opens your email app to send the referral.</p>
+              <p class="muted" id="referral-help">Required fields are marked with an asterisk. This form sends directly to our referrals inbox.</p>
               <button class="button" type="submit" aria-describedby="referral-help">Submit Referral</button>
             </div>
             <p id="referral-status" class="form-status" role="status" aria-live="polite"></p>
-            <details id="email-fallback" class="email-fallback" hidden>
-              <summary>Email app did not open? Use this fallback</summary>
-              <p>Copy the details below and email them to <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a>.</p>
-              <textarea id="referral-preview" readonly aria-label="Referral details to copy"></textarea>
-              <button type="button" class="button button--ghost button--small" id="copy-referral-details">Copy Referral Details</button>
-            </details>
           </form>
         </div>
       </section>

@@ -262,7 +262,15 @@
     return field.value.trim();
   }
 
-  if (referralForm instanceof HTMLFormElement) {
+  const directSubmitEnabled =
+    referralForm instanceof HTMLFormElement &&
+    referralForm.dataset.directSubmit === "true";
+
+  if (directSubmitEnabled) {
+    setReferralStatus("Submitting this form sends it directly to our referrals inbox.", false);
+  }
+
+  if (referralForm instanceof HTMLFormElement && !directSubmitEnabled) {
     referralForm.addEventListener("submit", function (event) {
       event.preventDefault();
 
