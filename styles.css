@@ -392,6 +392,11 @@ img {
   margin-top: 0.3rem;
 }
 
+.home-overview {
+  max-width: none;
+  width: 100%;
+}
+
 .hero__lead {
   font-size: 1rem;
   color: #27435d;
