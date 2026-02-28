@@ -11,6 +11,23 @@
 
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
+  const compactNavBreakpoint = 992;
+
+  function getCurrentScale() {
+    const inlineScale = Number.parseFloat(root.style.getPropertyValue("--font-scale"));
+    if (Number.isFinite(inlineScale)) return inlineScale;
+    const computedScale = Number.parseFloat(getComputedStyle(root).getPropertyValue("--font-scale"));
+    return Number.isFinite(computedScale) ? computedScale : 1;
+  }
+
+  function updateNavCompactMode() {
+    if (!(siteNav instanceof HTMLElement)) return;
+    const shouldCompact = window.innerWidth <= compactNavBreakpoint || getCurrentScale() > 0.95;
+    root.classList.toggle("nav-compact", shouldCompact);
+    if (!shouldCompact) {
+      setNavOpen(false);
+    }
+  }
 
   function setNavOpen(open) {
     if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
@@ -47,9 +64,7 @@
     });
 
     window.addEventListener("resize", function () {
-      if (window.innerWidth > 800 && siteNav.classList.contains("is-open")) {
-        setNavOpen(false);
-      }
+      updateNavCompactMode();
     });
   }
 
@@ -59,12 +74,13 @@
   const a11yButtons = Array.from(document.querySelectorAll("[data-a11y-action]"));
 
   const STORAGE_KEY = "ndisCarerAccessibility";
-  const minScale = 0.9;
-  const maxScale = 1.35;
-  const stepScale = 0.05;
+  const defaultScale = 0.92;
+  const minScale = 0.78;
+  const maxScale = 1;
+  const stepScale = 0.04;
 
   const state = {
-    fontScale: 1,
+    fontScale: defaultScale,
     highContrast: false,
     grayscale: false,
     underlineLinks: false,
@@ -138,10 +154,11 @@
     setPressed("toggle-underline-links", state.underlineLinks);
     setPressed("toggle-readable-font", state.readableFont);
     setPressed("toggle-reduce-motion", state.reduceMotion);
+    updateNavCompactMode();
   }
 
   function resetA11yState() {
-    state.fontScale = 1;
+    state.fontScale = defaultScale;
     state.highContrast = false;
     state.grayscale = false;
     state.underlineLinks = false;
@@ -153,6 +170,7 @@
 
   loadState();
   applyA11yState();
+  updateNavCompactMode();
 
   if (a11yToggle) {
     a11yToggle.addEventListener("click", function () {
