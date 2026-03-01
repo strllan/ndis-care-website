@@ -559,12 +559,12 @@
     exploreIntroObserver = new IntersectionObserver(
       function (entries) {
         if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
-        if (window.scrollY < 70) return;
-        if (entries.some(function (entry) { return entry.intersectionRatio >= 0.42; })) {
+        if (window.scrollY < 140) return;
+        if (entries.some(function (entry) { return entry.intersectionRatio >= 0.6; })) {
           playExploreIntro();
         }
       },
-      { threshold: [0.42], rootMargin: "0px 0px -8% 0px" }
+      { threshold: [0.6], rootMargin: "0px 0px -6% 0px" }
     );
     exploreIntroObserver.observe(exploreIntroRoot);
   }
