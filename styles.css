@@ -379,6 +379,14 @@ img {
   padding: 1.15rem;
 }
 
+.home-hero-main {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
 .hero__card {
   padding: 1.05rem;
   max-width: 38rem;
