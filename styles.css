@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --font-scale: 0.92;
+  --font-scale: 1.06;
   --bg: #f3f8fd;
   --bg-alt: #e9f2fb;
   --surface: #ffffff;
@@ -199,11 +199,13 @@ main {
 
 .brand::after {
   content: "";
-  width: clamp(8rem, 13vw, 10.5rem);
+  width: clamp(7.8rem, 13vw, 10.5rem);
   aspect-ratio: 2.45 / 1;
-  background: url("assets/registered-ndis-provider.svg") center / contain no-repeat;
+  background: url("assets/registered ndis provider.png") right bottom / contain no-repeat;
   flex: 0 0 auto;
-  margin-left: 0.2rem;
+  margin-left: 0.3rem;
+  align-self: flex-end;
+  margin-bottom: 0.06rem;
 }
 
 .brand__logo {
@@ -508,7 +510,7 @@ main {
 .home-hero-main {
   background:
     linear-gradient(118deg, rgba(7, 26, 44, 0.84) 0%, rgba(7, 29, 48, 0.68) 48%, rgba(8, 33, 54, 0.62) 100%),
-    url("assets/home-hero-care.jpg") center 42% / cover no-repeat;
+    url("assets/home page.png") center 42% / cover no-repeat;
   border: 1px solid rgba(193, 222, 245, 0.4);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
