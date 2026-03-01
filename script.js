@@ -25,9 +25,15 @@
   let heroIntroPlayed = false;
   let exploreIntroPlayed = false;
   let exploreIntroObserver = null;
+  let exploreCardObservers = [];
+  let exploreRefreshTimer = 0;
 
   if (exploreIntroRoot instanceof HTMLElement) {
-    exploreIntroRoot.classList.add("is-intro-pending");
+    if (window.innerWidth > 700) {
+      exploreIntroRoot.classList.add("is-intro-pending");
+    } else {
+      exploreIntroRoot.classList.add("is-mobile-intro");
+    }
   }
 
   function setupLanguageSwitcher() {
@@ -343,6 +349,12 @@
       if (window.innerWidth > compactNavBreakpoint) {
         setNavOpen(false);
       }
+      if (exploreRefreshTimer) {
+        window.clearTimeout(exploreRefreshTimer);
+      }
+      exploreRefreshTimer = window.setTimeout(function () {
+        refreshExploreIntro();
+      }, 140);
     });
   }
 
@@ -538,18 +550,78 @@
     });
   }
 
+  function disconnectExploreCardObservers() {
+    if (!exploreCardObservers.length) return;
+    exploreCardObservers.forEach(function (observer) {
+      observer.disconnect();
+    });
+    exploreCardObservers = [];
+  }
+
+  function setupMobileExploreIntro() {
+    if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
+
+    exploreIntroRoot.classList.remove("is-intro-pending");
+    exploreIntroRoot.classList.remove("is-intro-ready");
+    exploreIntroRoot.classList.add("is-mobile-intro");
+
+    if (!("IntersectionObserver" in window)) {
+      exploreIntroTargets.forEach(function (card) {
+        card.classList.add("is-card-ready");
+      });
+      return;
+    }
+
+    exploreIntroTargets.forEach(function (card) {
+      if (!(card instanceof HTMLElement)) return;
+      if (card.classList.contains("is-card-ready")) return;
+
+      const observer = new IntersectionObserver(
+        function (entries) {
+          if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+          if (!entries.some(function (entry) { return entry.intersectionRatio >= 0.22; })) return;
+          card.classList.add("is-card-ready");
+          observer.disconnect();
+        },
+        { threshold: [0.22], rootMargin: "0px 0px -8% 0px" }
+      );
+      observer.observe(card);
+      exploreCardObservers.push(observer);
+    });
+  }
+
   function refreshExploreIntro() {
     if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
 
+    if (exploreIntroObserver) {
+      exploreIntroObserver.disconnect();
+      exploreIntroObserver = null;
+    }
+    disconnectExploreCardObservers();
+
     const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
     if (motionDisabled) {
-      if (exploreIntroObserver) {
-        exploreIntroObserver.disconnect();
-        exploreIntroObserver = null;
-      }
       exploreIntroRoot.classList.remove("is-intro-pending");
       exploreIntroRoot.classList.remove("is-intro-ready");
+      exploreIntroRoot.classList.remove("is-mobile-intro");
+      exploreIntroTargets.forEach(function (card) {
+        card.classList.remove("is-card-ready");
+      });
       return;
+    }
+
+    const isMobileViewport = window.innerWidth <= 700;
+    if (isMobileViewport) {
+      setupMobileExploreIntro();
+      return;
+    }
+
+    exploreIntroRoot.classList.remove("is-mobile-intro");
+    exploreIntroTargets.forEach(function (card) {
+      card.classList.remove("is-card-ready");
+    });
+    if (!exploreIntroPlayed) {
+      exploreIntroRoot.classList.add("is-intro-pending");
     }
 
     if (exploreIntroPlayed) return;
@@ -559,11 +631,9 @@
       return;
     }
 
-    if (exploreIntroObserver) return;
-    const isMobileViewport = window.innerWidth <= 700;
-    const minScrollY = isMobileViewport ? 40 : 140;
-    const triggerRatio = isMobileViewport ? 0.24 : 0.6;
-    const triggerRootMargin = isMobileViewport ? "0px 0px 20% 0px" : "0px 0px -6% 0px";
+    const minScrollY = 140;
+    const triggerRatio = 0.6;
+    const triggerRootMargin = "0px 0px -6% 0px";
 
     exploreIntroObserver = new IntersectionObserver(
       function (entries) {
