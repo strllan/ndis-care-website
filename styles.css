@@ -112,6 +112,16 @@ img {
   margin-inline: auto;
 }
 
+.site-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
 .top-bar {
   background: #dff0ff;
   border-bottom: 1px solid #bcd8ef;
@@ -400,11 +410,6 @@ img {
   margin-top: 0.3rem;
 }
 
-.home-overview {
-  max-width: none;
-  width: 100%;
-}
-
 .hero__lead {
   font-size: 1rem;
   color: #27435d;
@@ -527,7 +532,7 @@ img {
 
 .service-card h3 {
   margin: 0;
-  color: var(--primary-strong);
+  color: #111111;
   font-size: 1.02rem;
   line-height: 1.25;
   font-weight: 700;
@@ -536,21 +541,6 @@ img {
 .service-card p {
   margin: 0.35rem 0 0;
   color: #24425d;
-}
-
-.service-card .service-code {
-  margin-top: 0.55rem;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #45627d;
-  background: #eef6ff;
-  border: 1px solid #c7dff3;
-  border-radius: 999px;
-  padding: 0.18rem 0.5rem;
-  letter-spacing: 0.04em;
 }
 
 .about-grid {
@@ -698,6 +688,13 @@ img {
   margin: 0;
   color: var(--primary-strong);
   font-weight: 600;
+}
+
+.thanks-actions {
+  margin: 1.25rem 0 1.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
 
 .checklist-grid {

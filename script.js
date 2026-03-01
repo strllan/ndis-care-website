@@ -278,14 +278,6 @@
     setReferralStatus("Submitting this form sends it directly to our referrals inbox.", false);
   }
 
-  const directCareersSubmitEnabled =
-    careersForm instanceof HTMLFormElement &&
-    careersForm.dataset.directSubmit === "true";
-
-  if (directCareersSubmitEnabled) {
-    setCareersStatus("Submitting this form sends it directly to admin@ndiscarer.com.", false);
-  }
-
   if (careersForm instanceof HTMLFormElement) {
     careersForm.addEventListener("submit", function (event) {
       const resumeField = careersForm.elements.namedItem("attachment");
