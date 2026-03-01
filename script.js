@@ -14,24 +14,115 @@
   const compactNavBreakpoint = 700;
 
   function setupLanguageSwitcher() {
-    if (!(siteNav instanceof HTMLElement)) return;
+    if (!(siteNav instanceof HTMLElement) || !body) return;
     if (siteNav.querySelector(".language-switcher")) return;
 
+    const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
     const languageOptions = [
-      { code: "en", label: "English" },
-      { code: "zh-CN", label: "Chinese" },
-      { code: "ar", label: "Arabic" },
-      { code: "it", label: "Italian" },
-      { code: "fr", label: "French" },
-      { code: "el", label: "Greek" },
-      { code: "hi", label: "Hindi" },
-      { code: "es", label: "Spanish" },
-      { code: "vi", label: "Vietnamese" },
-      { code: "ne", label: "Nepali" }
+      { code: "en", label: "English", flag: "🇦🇺" },
+      { code: "zh-CN", label: "Chinese", flag: "🇨🇳" },
+      { code: "ar", label: "Arabic", flag: "🇸🇦" },
+      { code: "it", label: "Italian", flag: "🇮🇹" },
+      { code: "fr", label: "French", flag: "🇫🇷" },
+      { code: "el", label: "Greek", flag: "🇬🇷" },
+      { code: "hi", label: "Hindi", flag: "🇮🇳" },
+      { code: "es", label: "Spanish", flag: "🇪🇸" },
+      { code: "vi", label: "Vietnamese", flag: "🇻🇳" },
+      { code: "ne", label: "Nepali", flag: "🇳🇵" }
     ];
+    const translationCache = new Map();
+    const textEntries = [];
+    const placeholderEntries = [];
+
+    function isTextTranslatable(value) {
+      const text = (value || "").replace(/\s+/g, " ").trim();
+      if (!text) return false;
+      if (text.includes("@")) return false;
+      if (/^https?:\/\//i.test(text)) return false;
+      if (/^[\d\s()+\-|/.,:%]+$/.test(text)) return false;
+      if (text.length < 2) return false;
+      return true;
+    }
+
+    function wrapTranslatedText(original, translatedCore) {
+      const leading = (original.match(/^\s*/) || [""])[0];
+      const trailing = (original.match(/\s*$/) || [""])[0];
+      return leading + translatedCore + trailing;
+    }
+
+    function collectTranslatableContent() {
+      const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, {
+        acceptNode: function (node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          if (parent.closest("script, style, noscript, code, pre, textarea, [data-no-translate]")) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          if (!isTextTranslatable(node.nodeValue || "")) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+
+      let current = walker.nextNode();
+      while (current) {
+        textEntries.push({
+          node: current,
+          original: current.nodeValue || ""
+        });
+        current = walker.nextNode();
+      }
+
+      document.querySelectorAll("input[placeholder], textarea[placeholder]").forEach(function (field) {
+        if (!(field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement)) return;
+        if (field.closest("[data-no-translate]")) return;
+        const placeholder = field.getAttribute("placeholder") || "";
+        if (!isTextTranslatable(placeholder)) return;
+        placeholderEntries.push({
+          element: field,
+          original: placeholder
+        });
+      });
+    }
+
+    function extractTranslatedText(data) {
+      if (!Array.isArray(data) || !Array.isArray(data[0])) return "";
+      return data[0]
+        .map(function (chunk) {
+          return Array.isArray(chunk) && typeof chunk[0] === "string" ? chunk[0] : "";
+        })
+        .join("");
+    }
+
+    async function translateText(value, langCode) {
+      const normalized = (value || "").trim();
+      if (!normalized || langCode === "en") return normalized;
+
+      const cacheKey = langCode + "::" + normalized;
+      if (translationCache.has(cacheKey)) {
+        return translationCache.get(cacheKey) || normalized;
+      }
+
+      try {
+        const url =
+          "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
+          encodeURIComponent(langCode) +
+          "&dt=t&q=" +
+          encodeURIComponent(normalized);
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Translation request failed");
+        const data = await response.json();
+        const translated = extractTranslatedText(data) || normalized;
+        translationCache.set(cacheKey, translated);
+      } catch (_error) {
+        translationCache.set(cacheKey, normalized);
+      }
+
+      return translationCache.get(cacheKey) || normalized;
+    }
 
     const switcher = document.createElement("div");
     switcher.className = "language-switcher";
+    switcher.setAttribute("data-no-translate", "true");
 
     const toggle = document.createElement("button");
     toggle.type = "button";
@@ -40,8 +131,7 @@
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Select language");
     toggle.innerHTML =
-      '<span class="language-switcher__icon" aria-hidden="true">&#127988;</span>' +
-      '<span class="language-switcher__label">Language</span>' +
+      '<span class="language-switcher__flag" aria-hidden="true">🇦🇺</span>' +
       '<span class="language-switcher__chevron" aria-hidden="true">&#9662;</span>';
 
     const menu = document.createElement("ul");
@@ -49,6 +139,12 @@
     menu.hidden = true;
     menu.setAttribute("role", "menu");
     menu.setAttribute("aria-label", "Language options");
+
+    function getLanguageByCode(code) {
+      return languageOptions.find(function (option) {
+        return option.code === code;
+      });
+    }
 
     languageOptions.forEach(function (option) {
       const item = document.createElement("li");
@@ -59,7 +155,14 @@
       button.className = "language-switcher__option";
       button.setAttribute("role", "menuitem");
       button.dataset.langCode = option.code;
-      button.textContent = option.label;
+      button.title = option.label;
+      button.innerHTML =
+        '<span class="language-switcher__flag" aria-hidden="true">' +
+        option.flag +
+        "</span>" +
+        '<span class="sr-only">' +
+        option.label +
+        "</span>";
 
       item.appendChild(button);
       menu.appendChild(item);
@@ -71,31 +174,67 @@
       toggle.setAttribute("aria-expanded", String(open));
     }
 
+    async function applyLanguage(langCode) {
+      const selectedLanguage = getLanguageByCode(langCode) || languageOptions[0];
+      const flagEl = toggle.querySelector(".language-switcher__flag");
+      if (flagEl instanceof HTMLElement) {
+        flagEl.textContent = selectedLanguage.flag;
+      }
+      toggle.setAttribute("aria-label", "Current language: " + selectedLanguage.label);
+      root.lang = selectedLanguage.code === "en" ? "en" : selectedLanguage.code;
+      root.dir = selectedLanguage.code === "ar" ? "rtl" : "ltr";
+      switcher.classList.add("is-loading");
+
+      try {
+        if (selectedLanguage.code === "en") {
+          textEntries.forEach(function (entry) {
+            entry.node.nodeValue = entry.original;
+          });
+          placeholderEntries.forEach(function (entry) {
+            entry.element.setAttribute("placeholder", entry.original);
+          });
+          return;
+        }
+
+        const translateJobs = textEntries.map(async function (entry) {
+          const translatedCore = await translateText(entry.original, selectedLanguage.code);
+          entry.node.nodeValue = wrapTranslatedText(entry.original, translatedCore);
+        });
+
+        const placeholderJobs = placeholderEntries.map(async function (entry) {
+          const translated = await translateText(entry.original, selectedLanguage.code);
+          entry.element.setAttribute("placeholder", translated);
+        });
+
+        await Promise.all(translateJobs.concat(placeholderJobs));
+      } finally {
+        switcher.classList.remove("is-loading");
+      }
+    }
+
     toggle.addEventListener("click", function () {
       setMenuOpen(menu.hidden);
     });
 
-    menu.addEventListener("click", function (event) {
+    menu.addEventListener("click", async function (event) {
       const target = event.target;
-      if (!(target instanceof HTMLButtonElement)) return;
-      const code = target.dataset.langCode;
+      if (!(target instanceof Node)) return;
+      const optionButton =
+        target instanceof HTMLButtonElement
+          ? target
+          : target instanceof Element
+            ? target.closest("button")
+            : null;
+      if (!(optionButton instanceof HTMLButtonElement)) return;
+      const code = optionButton.dataset.langCode;
       if (!code) return;
-
-      if (code === "en") {
-        window.location.href =
-          window.location.origin +
-          window.location.pathname +
-          window.location.search +
-          window.location.hash;
-        return;
+      setMenuOpen(false);
+      try {
+        localStorage.setItem(LANGUAGE_STORAGE_KEY, code);
+      } catch (_error) {
+        // Ignore storage errors.
       }
-
-      const translatedUrl =
-        "https://translate.google.com/translate?sl=auto&tl=" +
-        encodeURIComponent(code) +
-        "&u=" +
-        encodeURIComponent(window.location.href);
-      window.location.href = translatedUrl;
+      await applyLanguage(code);
     });
 
     document.addEventListener("click", function (event) {
@@ -120,6 +259,16 @@
     } else {
       siteNav.appendChild(switcher);
     }
+
+    collectTranslatableContent();
+
+    let savedLanguage = "en";
+    try {
+      savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
+    } catch (_error) {
+      savedLanguage = "en";
+    }
+    applyLanguage(savedLanguage);
   }
 
   setupLanguageSwitcher();
@@ -177,7 +326,7 @@
     newScrollTopToggle.id = "scroll-top-toggle";
     newScrollTopToggle.className = "scroll-top-toggle";
     newScrollTopToggle.setAttribute("aria-label", "Scroll to top");
-    newScrollTopToggle.innerHTML = '<span aria-hidden="true">↑</span>';
+    newScrollTopToggle.innerHTML = '<span class="scroll-top-toggle__caret" aria-hidden="true"></span>';
 
     if (a11yToggle && a11yToggle.parentNode) {
       a11yToggle.parentNode.insertBefore(newScrollTopToggle, a11yToggle);
