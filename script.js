@@ -9,35 +9,12 @@
     yearEl.textContent = String(new Date().getFullYear());
   }
 
-  function injectFooterProviderBadge() {
-    const footerBottom = document.querySelector(".footer-bottom");
-    if (!(footerBottom instanceof HTMLElement)) return;
-    if (footerBottom.querySelector(".footer-provider-badge")) return;
-
+  function getAssetBase() {
     const scriptEl = document.querySelector('script[src$="script.js"]');
     const scriptSrc = scriptEl instanceof HTMLScriptElement ? scriptEl.src : "";
-    if (!scriptSrc) return;
-
-    const assetBase = scriptSrc.slice(0, scriptSrc.lastIndexOf("/") + 1);
-
-    const badgeWrap = document.createElement("div");
-    badgeWrap.className = "footer-provider-badge";
-    badgeWrap.setAttribute("data-no-translate", "true");
-
-    const badgeImage = document.createElement("img");
-    badgeImage.src = assetBase + "assets/registered-ndis-provider.svg";
-    badgeImage.alt = "Registered NDIS Provider";
-    badgeImage.loading = "lazy";
-    badgeImage.decoding = "async";
-    badgeImage.addEventListener("error", function () {
-      badgeWrap.remove();
-    });
-
-    badgeWrap.appendChild(badgeImage);
-    footerBottom.appendChild(badgeWrap);
+    if (!scriptSrc) return "";
+    return scriptSrc.slice(0, scriptSrc.lastIndexOf("/") + 1) + "assets/";
   }
-
-  injectFooterProviderBadge();
 
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
@@ -48,17 +25,18 @@
     if (siteNav.querySelector(".language-switcher")) return;
 
     const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
+    const assetBase = getAssetBase();
     const languageOptions = [
-      { code: "en", label: "English", flag: "🇦🇺" },
-      { code: "zh-CN", label: "Chinese", flag: "🇨🇳" },
-      { code: "ar", label: "Arabic", flag: "🇸🇦" },
-      { code: "it", label: "Italian", flag: "🇮🇹" },
-      { code: "fr", label: "French", flag: "🇫🇷" },
-      { code: "el", label: "Greek", flag: "🇬🇷" },
-      { code: "hi", label: "Hindi", flag: "🇮🇳" },
-      { code: "es", label: "Spanish", flag: "🇪🇸" },
-      { code: "vi", label: "Vietnamese", flag: "🇻🇳" },
-      { code: "ne", label: "Nepali", flag: "🇳🇵" }
+      { code: "en", label: "English", flagFile: "australia.png" },
+      { code: "zh-CN", label: "Chinese", flagFile: "china.png" },
+      { code: "ar", label: "Arabic", flagFile: "saudi_arabia.png" },
+      { code: "it", label: "Italian", flagFile: "italy.png" },
+      { code: "fr", label: "French", flagFile: "france.png" },
+      { code: "el", label: "Greek", flagFile: "greece.png" },
+      { code: "hi", label: "Hindi", flagFile: "india.png" },
+      { code: "es", label: "Spanish", flagFile: "spain.png" },
+      { code: "vi", label: "Vietnamese", flagFile: "vietnam.png" },
+      { code: "ne", label: "Nepali", flagFile: "nepal.png" }
     ];
     const translationCache = new Map();
     const textEntries = [];
@@ -161,7 +139,10 @@
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Select language");
     toggle.innerHTML =
-      '<span class="language-switcher__flag" aria-hidden="true">🇦🇺</span>' +
+      '<img class="language-switcher__flag-image" src="' +
+      assetBase +
+      languageOptions[0].flagFile +
+      '" alt="" aria-hidden="true" loading="lazy" decoding="async">' +
       '<span class="language-switcher__chevron" aria-hidden="true">&#9662;</span>';
 
     const menu = document.createElement("ul");
@@ -187,9 +168,10 @@
       button.dataset.langCode = option.code;
       button.title = option.label;
       button.innerHTML =
-        '<span class="language-switcher__flag" aria-hidden="true">' +
-        option.flag +
-        "</span>" +
+        '<img class="language-switcher__flag-image" src="' +
+        assetBase +
+        option.flagFile +
+        '" alt="" aria-hidden="true" loading="lazy" decoding="async">' +
         '<span class="sr-only">' +
         option.label +
         "</span>";
@@ -206,9 +188,9 @@
 
     async function applyLanguage(langCode) {
       const selectedLanguage = getLanguageByCode(langCode) || languageOptions[0];
-      const flagEl = toggle.querySelector(".language-switcher__flag");
-      if (flagEl instanceof HTMLElement) {
-        flagEl.textContent = selectedLanguage.flag;
+      const flagEl = toggle.querySelector(".language-switcher__flag-image");
+      if (flagEl instanceof HTMLImageElement) {
+        flagEl.src = assetBase + selectedLanguage.flagFile;
       }
       toggle.setAttribute("aria-label", "Current language: " + selectedLanguage.label);
       root.lang = selectedLanguage.code === "en" ? "en" : selectedLanguage.code;
