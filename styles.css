@@ -514,7 +514,6 @@ main {
 .home-hero-main {
   position: relative;
   isolation: isolate;
-  overflow: hidden;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -539,7 +538,7 @@ main {
   height: 100%;
   will-change: transform;
   transform: translate3d(0, 0, 0);
-  animation: homeHeroImageScroll 56s linear infinite;
+  animation: homeHeroImageScroll 8s cubic-bezier(0.32, 0.02, 0.2, 1) infinite;
 }
 
 .home-hero-slider__slide {
@@ -552,22 +551,35 @@ main {
   height: 100%;
   display: block;
   object-fit: cover;
-  object-position: center 42%;
+  object-position: center center;
 }
 
-.home-hero-slider__slide:nth-child(2) img {
-  object-position: center 36%;
+.home-hero-slider__slide--1 img {
+  object-position: 64% 44%;
 }
 
-.home-hero-slider__slide:nth-child(3) img {
-  object-position: center 40%;
+.home-hero-slider__slide--2 img {
+  object-position: 52% 38%;
+}
+
+.home-hero-slider__slide--3 img {
+  object-position: 52% 42%;
 }
 
 @keyframes homeHeroImageScroll {
-  from {
+  0%,
+  25% {
     transform: translate3d(0, 0, 0);
   }
-  to {
+  33%,
+  58% {
+    transform: translate3d(-25%, 0, 0);
+  }
+  66%,
+  91% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
     transform: translate3d(-75%, 0, 0);
   }
 }
@@ -1537,6 +1549,18 @@ body.a11y-reduce-motion .home-hero-slider__track {
 
   .home-hero-slider__slide img {
     object-position: center;
+  }
+
+  .home-hero-slider__slide--1 img {
+    object-position: 60% center;
+  }
+
+  .home-hero-slider__slide--2 img {
+    object-position: 50% center;
+  }
+
+  .home-hero-slider__slide--3 img {
+    object-position: 50% center;
   }
 
   .footer-bottom {
