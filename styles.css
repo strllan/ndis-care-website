@@ -479,6 +479,11 @@ img {
   margin-bottom: 0;
 }
 
+.section__heading--secondary {
+  margin-top: 1.35rem;
+  margin-bottom: 0.9rem;
+}
+
 .explore-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
