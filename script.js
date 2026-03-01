@@ -13,6 +13,117 @@
   const siteNav = document.getElementById("site-nav");
   const compactNavBreakpoint = 700;
 
+  function setupLanguageSwitcher() {
+    if (!(siteNav instanceof HTMLElement)) return;
+    if (siteNav.querySelector(".language-switcher")) return;
+
+    const languageOptions = [
+      { code: "en", label: "English" },
+      { code: "zh-CN", label: "Chinese" },
+      { code: "ar", label: "Arabic" },
+      { code: "it", label: "Italian" },
+      { code: "fr", label: "French" },
+      { code: "el", label: "Greek" },
+      { code: "hi", label: "Hindi" },
+      { code: "es", label: "Spanish" },
+      { code: "vi", label: "Vietnamese" },
+      { code: "ne", label: "Nepali" }
+    ];
+
+    const switcher = document.createElement("div");
+    switcher.className = "language-switcher";
+
+    const toggle = document.createElement("button");
+    toggle.type = "button";
+    toggle.className = "language-switcher__toggle";
+    toggle.setAttribute("aria-haspopup", "menu");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Select language");
+    toggle.innerHTML =
+      '<span class="language-switcher__icon" aria-hidden="true">&#127988;</span>' +
+      '<span class="language-switcher__label">Language</span>' +
+      '<span class="language-switcher__chevron" aria-hidden="true">&#9662;</span>';
+
+    const menu = document.createElement("ul");
+    menu.className = "language-switcher__menu";
+    menu.hidden = true;
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("aria-label", "Language options");
+
+    languageOptions.forEach(function (option) {
+      const item = document.createElement("li");
+      item.setAttribute("role", "none");
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "language-switcher__option";
+      button.setAttribute("role", "menuitem");
+      button.dataset.langCode = option.code;
+      button.textContent = option.label;
+
+      item.appendChild(button);
+      menu.appendChild(item);
+    });
+
+    function setMenuOpen(open) {
+      menu.hidden = !open;
+      switcher.classList.toggle("is-open", open);
+      toggle.setAttribute("aria-expanded", String(open));
+    }
+
+    toggle.addEventListener("click", function () {
+      setMenuOpen(menu.hidden);
+    });
+
+    menu.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLButtonElement)) return;
+      const code = target.dataset.langCode;
+      if (!code) return;
+
+      if (code === "en") {
+        window.location.href =
+          window.location.origin +
+          window.location.pathname +
+          window.location.search +
+          window.location.hash;
+        return;
+      }
+
+      const translatedUrl =
+        "https://translate.google.com/translate?sl=auto&tl=" +
+        encodeURIComponent(code) +
+        "&u=" +
+        encodeURIComponent(window.location.href);
+      window.location.href = translatedUrl;
+    });
+
+    document.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (switcher.contains(target)) return;
+      setMenuOpen(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+      }
+    });
+
+    switcher.appendChild(toggle);
+    switcher.appendChild(menu);
+
+    const ctaLink = siteNav.querySelector(".site-nav__cta, .site-nav__referral");
+    if (ctaLink instanceof HTMLElement) {
+      siteNav.insertBefore(switcher, ctaLink);
+    } else {
+      siteNav.appendChild(switcher);
+    }
+  }
+
+  setupLanguageSwitcher();
+
   function setNavOpen(open) {
     if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
       return;
@@ -58,6 +169,29 @@
   const a11yPanel = document.getElementById("a11y-panel");
   const a11yClose = document.getElementById("a11y-close");
   const a11yButtons = Array.from(document.querySelectorAll("[data-a11y-action]"));
+  let scrollTopToggle = document.getElementById("scroll-top-toggle");
+
+  if (!(scrollTopToggle instanceof HTMLButtonElement) && body) {
+    const newScrollTopToggle = document.createElement("button");
+    newScrollTopToggle.type = "button";
+    newScrollTopToggle.id = "scroll-top-toggle";
+    newScrollTopToggle.className = "scroll-top-toggle";
+    newScrollTopToggle.setAttribute("aria-label", "Scroll to top");
+    newScrollTopToggle.innerHTML = '<span aria-hidden="true">↑</span>';
+
+    if (a11yToggle && a11yToggle.parentNode) {
+      a11yToggle.parentNode.insertBefore(newScrollTopToggle, a11yToggle);
+    } else {
+      body.appendChild(newScrollTopToggle);
+    }
+    scrollTopToggle = newScrollTopToggle;
+  }
+
+  if (scrollTopToggle instanceof HTMLButtonElement) {
+    scrollTopToggle.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
 
   const STORAGE_KEY = "ndisCarerAccessibility";
   const defaultScale = 0.92;
