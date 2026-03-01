@@ -283,7 +283,12 @@
     switcher.appendChild(toggle);
     switcher.appendChild(menu);
 
-    siteNav.appendChild(switcher);
+    const ctaLink = siteNav.querySelector(".site-nav__cta, .site-nav__referral");
+    if (ctaLink instanceof HTMLElement) {
+      siteNav.insertBefore(switcher, ctaLink);
+    } else {
+      siteNav.appendChild(switcher);
+    }
 
     // Keep core branding/footer content in original English while allowing
     // the acknowledgement heading itself to translate.

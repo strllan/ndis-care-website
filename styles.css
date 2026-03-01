@@ -1217,6 +1217,7 @@ main {
 
 @media (max-width: 700px) {
   :root {
+    --font-scale: 1.12;
     --header-offset: 7.2rem;
   }
 
@@ -1254,11 +1255,11 @@ main {
   }
 
   .brand__name {
-    font-size: clamp(1.2rem, 5.5vw, 1.45rem);
+    font-size: clamp(1.3rem, 6vw, 1.62rem);
   }
 
   .brand__legal {
-    font-size: 0.82rem;
+    font-size: 0.92rem;
   }
 
   .header-right {
@@ -1271,6 +1272,8 @@ main {
 
   .nav-toggle {
     display: inline-flex;
+    font-size: 1rem;
+    padding: 0.62rem 0.95rem;
   }
 
   .site-nav {
@@ -1295,6 +1298,8 @@ main {
     white-space: normal;
     border: 1px solid var(--border);
     background: #ffffff;
+    font-size: 1rem;
+    padding: 0.68rem 0.84rem;
   }
 
   .language-switcher {
@@ -1306,9 +1311,9 @@ main {
   .language-switcher__toggle {
     width: 100%;
     justify-content: center;
-    padding: 0.55rem 0.75rem;
+    padding: 0.62rem 0.82rem;
     border-radius: 0.65rem;
-    font-size: 0.92rem;
+    font-size: 0.98rem;
   }
 
   .language-switcher__menu {
