@@ -365,9 +365,12 @@
   }
 
   const STORAGE_KEY = "ndisCarerAccessibility";
-  const defaultScale = 0.92;
-  const minScale = 0.78;
-  const maxScale = 1;
+  const cssScale = Number.parseFloat(
+    window.getComputedStyle(root).getPropertyValue("--font-scale")
+  );
+  const defaultScale = Number.isFinite(cssScale) ? cssScale : 1.12;
+  const minScale = defaultScale;
+  const maxScale = Math.min(1.6, defaultScale + 0.32);
   const stepScale = 0.04;
 
   const state = {
