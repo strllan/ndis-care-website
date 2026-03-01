@@ -260,6 +260,16 @@
       siteNav.appendChild(switcher);
     }
 
+    // Keep core branding/footer content in original English while allowing
+    // the acknowledgement heading itself to translate.
+    document
+      .querySelectorAll(".brand__name, .brand__legal, .country-acknowledgement p, .footer-bottom")
+      .forEach(function (el) {
+        if (el instanceof HTMLElement) {
+          el.setAttribute("data-no-translate", "true");
+        }
+      });
+
     collectTranslatableContent();
 
     let savedLanguage = "en";

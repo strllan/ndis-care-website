@@ -350,16 +350,17 @@ main {
   top: calc(100% + 0.35rem);
   right: 0;
   margin: 0;
-  padding: 0.3rem;
-  min-width: 0;
+  padding: 0.45rem;
+  min-width: 12.6rem;
   list-style: none;
   background: #ffffff;
   border: 1px solid var(--border);
   border-radius: 0.7rem;
   box-shadow: var(--shadow);
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 0.2rem;
+  grid-template-columns: repeat(5, 2rem);
+  justify-content: center;
+  gap: 0.35rem;
   z-index: 40;
 }
 
@@ -380,6 +381,10 @@ main {
   padding: 0;
   font: inherit;
   cursor: pointer;
+}
+
+.language-switcher__option .language-switcher__flag {
+  font-size: 1.22rem;
 }
 
 .language-switcher__option:hover,
@@ -701,6 +706,11 @@ main {
   margin-bottom: 0;
 }
 
+.info-panel__cta-bottom {
+  margin-top: auto !important;
+  padding-top: 0.45rem;
+}
+
 .info-panel--tight .tick-list {
   gap: 0.45rem;
 }
@@ -979,6 +989,9 @@ main {
   right: 1rem;
   width: 3.35rem;
   height: 3.35rem;
+  display: grid;
+  place-items: center;
+  padding: 0;
   border-radius: 50%;
   border: 2px solid #ffffff;
   background: linear-gradient(180deg, #ffb43a, #f28c00);
@@ -1011,7 +1024,7 @@ main {
   height: 0.95rem;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
-  transform: rotate(45deg) translate(1px, 1px);
+  transform: rotate(45deg);
 }
 
 .a11y-panel {
