@@ -1459,12 +1459,15 @@ body.a11y-reduce-motion .home-hero-slider__track {
   .nav-toggle::after {
     content: "";
     position: absolute;
+    top: 50%;
+    left: 50%;
     width: 1.22rem;
     height: 2.5px;
     border-radius: 999px;
     background: #17324b;
     transition: transform 180ms ease, box-shadow 180ms ease, opacity 180ms ease;
     transform-origin: center;
+    transform: translate(-50%, -50%);
   }
 
   .nav-toggle::before {
@@ -1477,12 +1480,12 @@ body.a11y-reduce-motion .home-hero-slider__track {
 
   .nav-toggle[aria-expanded="true"]::before {
     box-shadow: none;
-    transform: rotate(45deg);
+    transform: translate(-50%, -50%) rotate(45deg);
   }
 
   .nav-toggle[aria-expanded="true"]::after {
     opacity: 1;
-    transform: rotate(-45deg);
+    transform: translate(-50%, -50%) rotate(-45deg);
   }
 
   .site-nav {
