@@ -560,15 +560,20 @@
     }
 
     if (exploreIntroObserver) return;
+    const isMobileViewport = window.innerWidth <= 700;
+    const minScrollY = isMobileViewport ? 40 : 140;
+    const triggerRatio = isMobileViewport ? 0.24 : 0.6;
+    const triggerRootMargin = isMobileViewport ? "0px 0px 20% 0px" : "0px 0px -6% 0px";
+
     exploreIntroObserver = new IntersectionObserver(
       function (entries) {
         if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
-        if (window.scrollY < 140) return;
-        if (entries.some(function (entry) { return entry.intersectionRatio >= 0.6; })) {
+        if (window.scrollY < minScrollY) return;
+        if (entries.some(function (entry) { return entry.intersectionRatio >= triggerRatio; })) {
           playExploreIntro();
         }
       },
-      { threshold: [0.6], rootMargin: "0px 0px -6% 0px" }
+      { threshold: [triggerRatio], rootMargin: triggerRootMargin }
     );
     exploreIntroObserver.observe(exploreIntroRoot);
   }
