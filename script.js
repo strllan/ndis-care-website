@@ -761,7 +761,7 @@
 
       const subject = `Referral Enquiry - ${values.participantName}`;
       const bodyLines = [
-        "NDIS Carer Referral Enquiry",
+        "We Care Referral Enquiry",
         "",
         "Participant Details",
         `Full Name: ${values.participantName}`,
