@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
 
 :root {
-  --font-scale: 1.06;
+  --font-scale: 1.12;
   --bg: #f3f8fd;
   --bg-alt: #e9f2fb;
   --surface: #ffffff;
@@ -198,14 +198,8 @@ main {
 }
 
 .brand::after {
-  content: "";
-  width: clamp(7.8rem, 13vw, 10.5rem);
-  aspect-ratio: 2.45 / 1;
-  background: url("assets/registered ndis provider.png") right bottom / contain no-repeat;
-  flex: 0 0 auto;
-  margin-left: 0.3rem;
-  align-self: flex-end;
-  margin-bottom: 0.06rem;
+  content: none;
+  display: none;
 }
 
 .brand__logo {
@@ -508,13 +502,27 @@ main {
 }
 
 .home-hero-main {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: clamp(1.4rem, 3vw, 2.2rem) 0;
+}
+
+.home-hero-main::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
   background:
     linear-gradient(118deg, rgba(7, 26, 44, 0.84) 0%, rgba(7, 29, 48, 0.68) 48%, rgba(8, 33, 54, 0.62) 100%),
     url("assets/home page.png") center 42% / cover no-repeat;
-  border: 1px solid rgba(193, 222, 245, 0.4);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow);
-  padding: clamp(1.2rem, 3vw, 2rem);
+  border-top: 1px solid rgba(193, 222, 245, 0.36);
+  border-bottom: 1px solid rgba(193, 222, 245, 0.36);
+  z-index: -1;
 }
 
 .home-hero-main .eyebrow,
@@ -1042,6 +1050,21 @@ main {
   margin: 0;
 }
 
+.footer-bottom p:first-child {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.footer-bottom p:first-child::after {
+  content: "";
+  width: clamp(7.8rem, 17vw, 11rem);
+  aspect-ratio: 1418 / 592;
+  background: url("assets/registered ndis provider.png") right bottom / contain no-repeat;
+  flex: 0 0 auto;
+}
+
 .footer-provider-badge {
   margin-top: 0.5rem;
   padding-top: 0.4rem;
@@ -1192,10 +1215,6 @@ main {
 }
 
 @media (max-width: 70rem) {
-  .brand::after {
-    width: 8rem;
-  }
-
   .brand__legal {
     font-size: 0.84rem;
   }
@@ -1217,7 +1236,7 @@ main {
 
 @media (max-width: 700px) {
   :root {
-    --font-scale: 1.12;
+    --font-scale: 1.2;
     --header-offset: 7.2rem;
   }
 
@@ -1248,10 +1267,6 @@ main {
   .brand {
     flex: 1 1 auto;
     min-width: 0;
-  }
-
-  .brand::after {
-    display: none;
   }
 
   .brand__name {
@@ -1352,6 +1367,7 @@ main {
 
 @media (max-width: 50rem) {
   :root {
+    --font-scale: 1.2;
     --header-offset: 6.8rem;
   }
 
@@ -1389,7 +1405,20 @@ main {
   }
 
   .home-hero-main {
+    padding: 1.25rem 0;
+  }
+
+  .home-hero-main::before {
     background-position: center;
+  }
+
+  .footer-bottom p:first-child {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-bottom p:first-child::after {
+    width: 8.8rem;
   }
 
   .a11y-panel {
