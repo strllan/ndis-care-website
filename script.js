@@ -226,6 +226,8 @@
   const emailFallback = document.getElementById("email-fallback");
   const referralPreview = document.getElementById("referral-preview");
   const copyReferralDetails = document.getElementById("copy-referral-details");
+  const careersForm = document.getElementById("careers-form");
+  const careersStatus = document.getElementById("careers-status");
 
   function setReferralStatus(message, isError) {
     if (!referralStatus) return;
@@ -262,12 +264,42 @@
     return field.value.trim();
   }
 
+  function setCareersStatus(message, isError) {
+    if (!careersStatus) return;
+    careersStatus.textContent = message;
+    careersStatus.style.color = isError ? "#b02020" : "";
+  }
+
   const directSubmitEnabled =
     referralForm instanceof HTMLFormElement &&
     referralForm.dataset.directSubmit === "true";
 
   if (directSubmitEnabled) {
     setReferralStatus("Submitting this form sends it directly to our referrals inbox.", false);
+  }
+
+  const directCareersSubmitEnabled =
+    careersForm instanceof HTMLFormElement &&
+    careersForm.dataset.directSubmit === "true";
+
+  if (directCareersSubmitEnabled) {
+    setCareersStatus("Submitting this form sends it directly to admin@ndiscarer.com.", false);
+  }
+
+  if (careersForm instanceof HTMLFormElement) {
+    careersForm.addEventListener("submit", function (event) {
+      const resumeField = careersForm.elements.namedItem("attachment");
+      if (!(resumeField instanceof HTMLInputElement)) return;
+
+      const file = resumeField.files && resumeField.files[0];
+      if (!file) return;
+
+      const maxBytes = 4 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        event.preventDefault();
+        setCareersStatus("Resume file must be under 4MB. Please choose a smaller file.", true);
+      }
+    });
   }
 
   if (referralForm instanceof HTMLFormElement && !directSubmitEnabled) {

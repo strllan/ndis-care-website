@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Apply for careers at NDIS Carer by submitting your details and resume.">
+  <meta name="theme-color" content="#1d8ed1">
+  <title>NDIS Carer | Careers</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="canonical" href="https://strllan.github.io/ndis-care-website/careers/">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <div class="site-shell">
+    <div class="top-bar" aria-label="Quick contact information">
+      <div class="container top-bar__inner">
+        <div class="top-bar__contacts">
+          <p class="top-bar__item"><span aria-hidden="true">📞</span><a href="tel:0406618128">0406 618 128</a></p>
+          <p class="top-bar__item"><span aria-hidden="true">✉️</span><a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a></p>
+        </div>
+        <p class="top-bar__badge">Registered NDIS Provider</p>
+      </div>
+    </div>
+
+    <header class="site-header" id="top">
+      <div class="container site-header__inner">
+        <a href="../home/" class="brand" aria-label="NDIS Carer home">
+          <span class="brand__logo"><img src="../assets/logo.png" alt="NDIS Carer logo" onerror="this.hidden=true; this.nextElementSibling.hidden=false;"><span class="brand__logo-fallback" hidden>WE CARE</span></span>
+          <span class="brand__text"><span class="brand__name">NDIS Carer</span><span class="brand__legal">Greater Sydney NDIS Nursing Care Provider</span></span>
+        </a>
+        <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+          <a href="../home/">Home</a>
+          <a href="../services/">Services</a>
+          <a href="../about-us/">About</a>
+          <a href="../rights/">Rights</a>
+          <a href="../careers/" aria-current="page">Careers</a>
+          <a href="../contact/">Contact</a>
+          <a class="button site-nav__cta" href="../referral/">Make a Referral</a>
+          <a class="site-nav__referral" href="../referral/">Referrals</a>
+        </nav>
+        <div class="header-right"><button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation menu">Menu</button></div>
+      </div>
+    </header>
+
+    <main id="main-content">
+      <section class="section" aria-labelledby="careers-title">
+        <div class="container">
+          <div class="section__heading">
+            <p class="eyebrow">Careers</p>
+            <h1 id="careers-title">Join our team</h1>
+            <p>
+              If you would like to work for an organisation making a real difference in people's lives, we would love to hear from you.
+              Please fill in the following form and upload your resume. Our Recruitment Team will then be in touch with you if you meet
+              the requirements of the role.
+            </p>
+          </div>
+
+          <form id="careers-form" class="referral-form" method="POST" enctype="multipart/form-data" action="https://formsubmit.co/admin@ndiscarer.com" data-direct-submit="true">
+            <input type="hidden" name="_subject" value="New NDIS Carer Careers Application">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" value="https://strllan.github.io/ndis-care-website/careers/thanks/">
+            <input
+              type="text"
+              name="_honey"
+              tabindex="-1"
+              autocomplete="off"
+              aria-hidden="true"
+              style="position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;"
+            >
+
+            <fieldset class="form-card">
+              <legend>Applicant details</legend>
+              <div class="form-grid">
+                <div class="form-field"><label for="first-name">First Name <span aria-hidden="true">*</span></label><input id="first-name" name="firstName" type="text" required autocomplete="given-name"></div>
+                <div class="form-field"><label for="last-name">Last Name <span aria-hidden="true">*</span></label><input id="last-name" name="lastName" type="text" required autocomplete="family-name"></div>
+                <div class="form-field"><label for="career-phone">Phone Number <span aria-hidden="true">*</span></label><input id="career-phone" name="phoneNumber" type="tel" required autocomplete="tel"></div>
+                <div class="form-field"><label for="career-email">Email Address <span aria-hidden="true">*</span></label><input id="career-email" name="emailAddress" type="email" required autocomplete="email"></div>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>Please check which of the following documents you have</legend>
+              <div class="checklist-grid" role="group" aria-label="Document checklist">
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="NDIS Worker Screening Check completed within the last 12 months"> <span>NDIS Worker Screening Check completed within the last 12 months</span></label>
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="First Aid and CPR completed within the last 12 months"> <span>First Aid and CPR completed within the last 12 months</span></label>
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="I have a current Driver's Licence"> <span>I have a current Driver's Licence</span></label>
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="I have proof of residency (Australian Birth certificate or Passport/Citizenship documents/Visa documents)"> <span>I have proof of residency (Australian Birth certificate or Passport/Citizenship documents/Visa documents)</span></label>
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="I have an NDIS Worker Orientation Screening certificate"> <span>I have an NDIS Worker Orientation Screening certificate</span></label>
+                <label class="check-item"><input type="checkbox" name="documentsHeld[]" value="I have a minimum Cert III in Disability/Aged care OR at least 6 months experience in a similar role"> <span>I have a minimum Cert III in Disability/Aged care OR at least 6 months experience in a similar role</span></label>
+              </div>
+            </fieldset>
+
+            <fieldset class="form-card">
+              <legend>Upload your CV</legend>
+              <p class="file-help">Accepted files: .doc, .docx, .pdf (under 4MB)</p>
+              <div class="form-field">
+                <label for="career-resume">Resume File <span aria-hidden="true">*</span></label>
+                <input id="career-resume" name="attachment" type="file" accept=".doc,.docx,.pdf,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+              </div>
+            </fieldset>
+
+            <div class="form-actions">
+              <p class="muted" id="careers-help">This form sends your details and resume directly to <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a>.</p>
+              <button class="button" type="submit" aria-describedby="careers-help">Submit Info</button>
+            </div>
+            <p id="careers-status" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bottom">
+          <p><strong>NDIS Carer</strong> | Greater Sydney NDIS Nursing Care Provider</p>
+          <p><a href="tel:0406618128">0406 618 128</a> <span aria-hidden="true">|</span> <a href="mailto:admin@ndiscarer.com">admin@ndiscarer.com</a></p>
+          <p>© <span id="current-year"></span> NDIS Carer. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <button type="button" class="a11y-toggle" id="a11y-toggle" aria-expanded="false" aria-controls="a11y-panel" aria-label="Open accessibility tools"><span aria-hidden="true">♿</span></button>
+  <aside class="a11y-panel" id="a11y-panel" hidden aria-labelledby="a11y-title"><div class="a11y-panel__header"><h2 id="a11y-title">Accessibility Tools</h2><button type="button" class="a11y-close" id="a11y-close" aria-label="Close accessibility tools">✕</button></div><p class="muted a11y-panel__intro">Use these tools to adjust reading and contrast preferences on this site.</p><div class="a11y-actions" role="group" aria-label="Accessibility options"><button type="button" data-a11y-action="increase-text">A+ Increase Text</button><button type="button" data-a11y-action="decrease-text">A- Decrease Text</button><button type="button" data-a11y-action="toggle-readable-font" aria-pressed="false">Readable Font</button><button type="button" data-a11y-action="toggle-high-contrast" aria-pressed="false">High Contrast</button><button type="button" data-a11y-action="toggle-grayscale" aria-pressed="false">Grayscale</button><button type="button" data-a11y-action="toggle-underline-links" aria-pressed="false">Underline Links</button><button type="button" data-a11y-action="toggle-reduce-motion" aria-pressed="false">Reduce Motion</button><button type="button" data-a11y-action="reset">Reset</button></div></aside>
+
+  <script src="../script.js"></script>
+</body>
+</html>
