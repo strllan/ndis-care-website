@@ -234,10 +234,10 @@ main {
 }
 
 .brand__name {
-  font-weight: 700;
-  font-size: clamp(1.58rem, 2.3vw, 1.98rem);
+  font-weight: 650;
+  font-size: clamp(1.42rem, 2.05vw, 1.76rem);
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.006em;
 }
 
 .brand__legal {
@@ -1343,7 +1343,7 @@ main {
   }
 
   .brand__name {
-    font-size: clamp(1.3rem, 6vw, 1.62rem);
+    font-size: clamp(1.2rem, 5.2vw, 1.46rem);
   }
 
   .brand__legal {
