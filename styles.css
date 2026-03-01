@@ -549,6 +549,27 @@ main {
   color: rgba(240, 248, 255, 0.95);
 }
 
+.home-hero-main.is-intro-pending [data-hero-intro] {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.home-hero-main.is-intro-ready [data-hero-intro] {
+  animation: heroIntroIn 700ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--hero-intro-delay, 0ms);
+}
+
+@keyframes heroIntroIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .home-hero-main .button--ghost {
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.62);
@@ -655,7 +676,8 @@ main {
 
 .explore-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
   gap: 0.9rem;
 }
 
@@ -667,6 +689,8 @@ main {
   border-radius: var(--radius);
   padding: 1.05rem;
   box-shadow: var(--shadow);
+  height: 100%;
+  min-height: 15.8rem;
 }
 
 .explore-card h3 {
@@ -681,6 +705,27 @@ main {
 .explore-card p:last-child {
   margin-top: auto;
   margin-bottom: 0;
+}
+
+.home-explore.is-intro-pending .explore-card {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+.home-explore.is-intro-ready .explore-card {
+  animation: exploreCardIn 620ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--explore-delay, 0ms);
+}
+
+@keyframes exploreCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .service-grid {
@@ -1204,6 +1249,10 @@ main {
 @media (max-width: 70rem) {
   .hero__inner {
     grid-template-columns: 1fr;
+  }
+
+  .explore-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .service-grid {

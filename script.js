@@ -19,6 +19,12 @@
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
   const compactNavBreakpoint = 700;
+  const heroIntroRoot = document.querySelector(".home-hero-main");
+  const exploreIntroRoot = document.querySelector(".home-explore");
+  const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let heroIntroPlayed = false;
+  let exploreIntroPlayed = false;
+  let exploreIntroObserver = null;
 
   function setupLanguageSwitcher() {
     if (!(siteNav instanceof HTMLElement) || !body) return;
@@ -450,6 +456,117 @@
     setPressed("toggle-reduce-motion", state.reduceMotion);
   }
 
+  function setupHomeHeroIntroTargets() {
+    if (!(heroIntroRoot instanceof HTMLElement)) return [];
+    const selectors = [
+      ".eyebrow",
+      "h1",
+      ".hero__lead",
+      ".hero__actions",
+      ".hero__highlights"
+    ];
+
+    return selectors
+      .map(function (selector) {
+        return heroIntroRoot.querySelector(selector);
+      })
+      .filter(function (el) {
+        return el instanceof HTMLElement;
+      })
+      .map(function (el, index) {
+        el.setAttribute("data-hero-intro", "true");
+        el.style.setProperty("--hero-intro-delay", String(index * 90) + "ms");
+        return el;
+      });
+  }
+
+  const heroIntroTargets = setupHomeHeroIntroTargets();
+
+  function refreshHomeHeroIntro() {
+    if (!(heroIntroRoot instanceof HTMLElement) || heroIntroTargets.length === 0) return;
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      heroIntroRoot.classList.remove("is-intro-pending");
+      heroIntroRoot.classList.remove("is-intro-ready");
+      return;
+    }
+
+    if (heroIntroPlayed) return;
+    heroIntroPlayed = true;
+
+    heroIntroRoot.classList.add("is-intro-pending");
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        heroIntroRoot.classList.add("is-intro-ready");
+      });
+    });
+  }
+
+  function setupExploreIntroTargets() {
+    if (!(exploreIntroRoot instanceof HTMLElement)) return [];
+    return Array.from(exploreIntroRoot.querySelectorAll(".explore-card")).map(function (card, index) {
+      if (!(card instanceof HTMLElement)) return null;
+      card.style.setProperty("--explore-delay", String(index * 90) + "ms");
+      return card;
+    }).filter(function (card) {
+      return card instanceof HTMLElement;
+    });
+  }
+
+  const exploreIntroTargets = setupExploreIntroTargets();
+
+  function playExploreIntro() {
+    if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
+    if (exploreIntroPlayed) return;
+    exploreIntroPlayed = true;
+
+    if (exploreIntroObserver) {
+      exploreIntroObserver.disconnect();
+      exploreIntroObserver = null;
+    }
+
+    exploreIntroRoot.classList.add("is-intro-pending");
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        exploreIntroRoot.classList.add("is-intro-ready");
+      });
+    });
+  }
+
+  function refreshExploreIntro() {
+    if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      if (exploreIntroObserver) {
+        exploreIntroObserver.disconnect();
+        exploreIntroObserver = null;
+      }
+      exploreIntroRoot.classList.remove("is-intro-pending");
+      exploreIntroRoot.classList.remove("is-intro-ready");
+      return;
+    }
+
+    if (exploreIntroPlayed) return;
+
+    if (!("IntersectionObserver" in window)) {
+      playExploreIntro();
+      return;
+    }
+
+    if (exploreIntroObserver) return;
+    exploreIntroObserver = new IntersectionObserver(
+      function (entries) {
+        if (entries.some(function (entry) { return entry.isIntersecting; })) {
+          playExploreIntro();
+        }
+      },
+      { threshold: 0.22 }
+    );
+    exploreIntroObserver.observe(exploreIntroRoot);
+  }
+
   function resetA11yState() {
     state.fontScale = defaultScale;
     state.highContrast = false;
@@ -463,6 +580,8 @@
 
   loadState();
   applyA11yState();
+  refreshHomeHeroIntro();
+  refreshExploreIntro();
   setNavOpen(false);
 
   if (a11yToggle) {
@@ -525,6 +644,8 @@
       }
 
       applyA11yState();
+      refreshHomeHeroIntro();
+      refreshExploreIntro();
       saveState();
     });
   });
