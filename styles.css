@@ -538,7 +538,7 @@ main {
   height: 100%;
   will-change: transform;
   transform: translate3d(0, 0, 0);
-  animation: homeHeroImageScroll 10.8s linear infinite;
+  animation: homeHeroImageScroll 8.4s linear infinite;
 }
 
 .home-hero-slider__slide {
@@ -569,15 +569,15 @@ main {
 
 @keyframes homeHeroImageScroll {
   0%,
-  27.778% {
+  29.762% {
     transform: translate3d(0, 0, 0);
   }
   33.333%,
-  61.111% {
+  63.095% {
     transform: translate3d(-100vw, 0, 0);
   }
   66.667%,
-  94.444% {
+  96.429% {
     transform: translate3d(-200vw, 0, 0);
   }
   100% {
