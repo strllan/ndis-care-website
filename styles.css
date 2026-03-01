@@ -983,6 +983,20 @@ main {
   margin: 0;
 }
 
+.footer-provider-badge {
+  margin-top: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  max-width: 20rem;
+}
+
+.footer-provider-badge img {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.2));
+}
+
 .a11y-toggle,
 .scroll-top-toggle {
   position: fixed;
@@ -1168,7 +1182,8 @@ main {
   }
 
   .brand {
-    flex: 1 1 100%;
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .brand__name {
@@ -1181,8 +1196,10 @@ main {
 
   .header-right {
     display: flex;
-    width: 100%;
+    width: auto;
+    margin-left: auto;
     justify-content: flex-end;
+    align-self: center;
   }
 
   .nav-toggle {

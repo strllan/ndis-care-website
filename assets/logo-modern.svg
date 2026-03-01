@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">WE CARE Logo</title>
+  <desc id="desc">Modern caring people icon with heart and WE CARE text.</desc>
+
+  <defs>
+    <linearGradient id="headLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#30d5c8"/>
+      <stop offset="100%" stop-color="#0f8fd0"/>
+    </linearGradient>
+    <linearGradient id="headRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2fc8d5"/>
+      <stop offset="100%" stop-color="#173a98"/>
+    </linearGradient>
+    <linearGradient id="armLeft" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#54e2be"/>
+      <stop offset="100%" stop-color="#1297d4"/>
+    </linearGradient>
+    <linearGradient id="armRight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#19409f"/>
+      <stop offset="100%" stop-color="#2cc8c9"/>
+    </linearGradient>
+    <linearGradient id="wordLeft" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b8c9"/>
+      <stop offset="100%" stop-color="#21d1b8"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="188" cy="116" r="34" fill="url(#headLeft)"/>
+  <circle cx="324" cy="116" r="34" fill="url(#headRight)"/>
+
+  <path d="M108 212c0-42 34-76 76-76 30 0 57 17 70 43 13-26 40-43 70-43 42 0 76 34 76 76 0 33-24 58-56 82-25 18-51 34-90 57-39-23-65-39-90-57-32-24-56-49-56-82z" fill="#ffffff" opacity="0.06"/>
+
+  <path d="M128 202c0-33 27-60 60-60 23 0 44 13 55 32 11-19 32-32 55-32 33 0 60 27 60 60 0 28-21 48-44 64-20 15-40 27-71 45-31-18-51-30-71-45-23-16-44-36-44-64z" fill="url(#armLeft)"/>
+  <path d="M360 200c0-32-26-58-58-58-22 0-43 13-54 31l90 95c16-12 22-24 22-40z" fill="url(#armRight)" opacity="0.95"/>
+
+  <path d="M130 294c13-19 39-18 58-9l69 34 69-34c19-9 45-10 58 9-11 25-38 39-66 48-18 6-39 13-61 24-22-11-43-18-61-24-28-9-55-23-66-48z" fill="url(#armLeft)"/>
+
+  <path d="M256 230l-18-11c-16-10-26-19-26-33 0-12 9-21 21-21 8 0 16 4 23 13 7-9 15-13 23-13 12 0 21 9 21 21 0 14-10 23-26 33z" fill="#ffffff"/>
+
+  <text x="92" y="456" font-family="Manrope, Arial, sans-serif" font-size="82" font-weight="800" fill="url(#wordLeft)">WE</text>
+  <text x="246" y="456" font-family="Manrope, Arial, sans-serif" font-size="82" font-weight="800" fill="#123f9a">CARE</text>
+</svg>

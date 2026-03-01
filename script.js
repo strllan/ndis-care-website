@@ -9,6 +9,36 @@
     yearEl.textContent = String(new Date().getFullYear());
   }
 
+  function injectFooterProviderBadge() {
+    const footerBottom = document.querySelector(".footer-bottom");
+    if (!(footerBottom instanceof HTMLElement)) return;
+    if (footerBottom.querySelector(".footer-provider-badge")) return;
+
+    const scriptEl = document.querySelector('script[src$="script.js"]');
+    const scriptSrc = scriptEl instanceof HTMLScriptElement ? scriptEl.src : "";
+    if (!scriptSrc) return;
+
+    const assetBase = scriptSrc.slice(0, scriptSrc.lastIndexOf("/") + 1);
+
+    const badgeWrap = document.createElement("div");
+    badgeWrap.className = "footer-provider-badge";
+    badgeWrap.setAttribute("data-no-translate", "true");
+
+    const badgeImage = document.createElement("img");
+    badgeImage.src = assetBase + "assets/registered-ndis-provider.svg";
+    badgeImage.alt = "Registered NDIS Provider";
+    badgeImage.loading = "lazy";
+    badgeImage.decoding = "async";
+    badgeImage.addEventListener("error", function () {
+      badgeWrap.remove();
+    });
+
+    badgeWrap.appendChild(badgeImage);
+    footerBottom.appendChild(badgeWrap);
+  }
+
+  injectFooterProviderBadge();
+
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
   const compactNavBreakpoint = 700;
