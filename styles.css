@@ -510,15 +510,12 @@ img {
   border-radius: 1rem;
   padding: 1rem;
   box-shadow: 0 6px 16px rgba(17, 38, 58, 0.05);
-  display: flex;
-  flex-direction: column;
-  min-height: 9.4rem;
 }
 
 .service-card h3 {
   margin: 0;
   color: var(--primary-strong);
-  font-size: 1rem;
+  font-size: 1.02rem;
   line-height: 1.25;
   font-weight: 700;
 }
@@ -529,10 +526,18 @@ img {
 }
 
 .service-card .service-code {
-  margin-top: auto;
-  font-size: 0.9rem;
+  margin-top: 0.55rem;
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  font-size: 0.82rem;
   font-weight: 700;
-  color: #56708a;
+  color: #45627d;
+  background: #eef6ff;
+  border: 1px solid #c7dff3;
+  border-radius: 999px;
+  padding: 0.18rem 0.5rem;
+  letter-spacing: 0.04em;
 }
 
 .about-grid {
