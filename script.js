@@ -33,7 +33,7 @@
     const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
     const assetBase = getAssetBase();
     const languageOptions = [
-      { code: "en", label: "English", flagFile: "australia.png" },
+      { code: "en", label: "English", flagFile: "union_jack.png" },
       { code: "zh-CN", label: "Chinese", flagFile: "china.png" },
       { code: "ar", label: "Arabic", flagFile: "saudi_arabia.png" },
       { code: "it", label: "Italian", flagFile: "italy.png" },
@@ -475,7 +475,7 @@
       })
       .map(function (el, index) {
         el.setAttribute("data-hero-intro", "true");
-        el.style.setProperty("--hero-intro-delay", String(index * 90) + "ms");
+        el.style.setProperty("--hero-intro-delay", String(index * 140) + "ms");
         return el;
       });
   }
@@ -507,7 +507,7 @@
     if (!(exploreIntroRoot instanceof HTMLElement)) return [];
     return Array.from(exploreIntroRoot.querySelectorAll(".explore-card")).map(function (card, index) {
       if (!(card instanceof HTMLElement)) return null;
-      card.style.setProperty("--explore-delay", String(index * 90) + "ms");
+      card.style.setProperty("--explore-delay", String(index * 150) + "ms");
       return card;
     }).filter(function (card) {
       return card instanceof HTMLElement;
@@ -558,11 +558,13 @@
     if (exploreIntroObserver) return;
     exploreIntroObserver = new IntersectionObserver(
       function (entries) {
-        if (entries.some(function (entry) { return entry.isIntersecting; })) {
+        if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+        if (window.scrollY < 70) return;
+        if (entries.some(function (entry) { return entry.intersectionRatio >= 0.42; })) {
           playExploreIntro();
         }
       },
-      { threshold: 0.22 }
+      { threshold: [0.42], rootMargin: "0px 0px -8% 0px" }
     );
     exploreIntroObserver.observe(exploreIntroRoot);
   }
