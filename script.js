@@ -26,6 +26,10 @@
   let exploreIntroPlayed = false;
   let exploreIntroObserver = null;
 
+  if (exploreIntroRoot instanceof HTMLElement) {
+    exploreIntroRoot.classList.add("is-intro-pending");
+  }
+
   function setupLanguageSwitcher() {
     if (!(siteNav instanceof HTMLElement) || !body) return;
     if (siteNav.querySelector(".language-switcher")) return;

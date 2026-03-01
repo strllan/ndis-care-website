@@ -722,10 +722,14 @@ main {
 
 .home-explore.is-intro-pending .explore-card {
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
   transform: translateY(1rem);
 }
 
 .home-explore.is-intro-ready .explore-card {
+  visibility: visible;
+  pointer-events: auto;
   animation: exploreCardIn 920ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
   animation-delay: var(--explore-delay, 0ms);
 }
