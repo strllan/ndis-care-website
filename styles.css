@@ -157,7 +157,9 @@ main {
 }
 
 .top-bar__badge {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
