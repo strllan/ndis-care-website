@@ -520,6 +520,21 @@
     reduceMotion: false
   };
 
+  function scrollToHashTarget() {
+    const hash = window.location.hash;
+    if (!hash || hash.length <= 1) return;
+
+    const targetId = decodeURIComponent(hash.slice(1));
+    if (!targetId) return;
+
+    const target = document.getElementById(targetId);
+    if (!(target instanceof HTMLElement)) return;
+
+    const behavior =
+      state.reduceMotion || prefersReducedMotionQuery.matches ? "auto" : "smooth";
+    target.scrollIntoView({ block: "start", behavior });
+  }
+
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
@@ -782,6 +797,15 @@
   refreshHomeHeroIntro();
   refreshExploreIntro();
   setNavOpen(false);
+  scrollToHashTarget();
+
+  window.addEventListener("hashchange", function () {
+    scrollToHashTarget();
+  });
+
+  window.addEventListener("load", function () {
+    window.setTimeout(scrollToHashTarget, 120);
+  });
 
   if (a11yToggle) {
     a11yToggle.addEventListener("click", function () {
