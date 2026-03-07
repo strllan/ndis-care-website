@@ -38,6 +38,7 @@
   const HERO_SLIDE_FADE_MS = 1000;
   const exploreIntroRoot = document.querySelector(".home-explore");
   const offersIntroRoot = document.querySelector(".home-offers");
+  const serviceHeroRoot = document.querySelector(".service-hero");
   const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let heroIntroPlayed = false;
   let heroSliderIndex = 0;
@@ -78,6 +79,11 @@
     { slug: "group-centre-activities", label: "Group / Centre Activities" }
   ];
   const primaryServiceSlug = serviceCatalogItems[0] ? serviceCatalogItems[0].slug : "";
+
+  function shouldUseTapDropdownBehavior() {
+    if (window.innerWidth <= compactNavBreakpoint) return true;
+    return window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  }
 
   function setupServicesDropdown() {
     if (!(siteNav instanceof HTMLElement)) return;
@@ -122,7 +128,7 @@
     servicesLink.replaceWith(dropdown);
 
     trigger.addEventListener("click", function (event) {
-      if (window.innerWidth > compactNavBreakpoint) return;
+      if (!shouldUseTapDropdownBehavior()) return;
       if (!dropdown.classList.contains("is-open")) {
         event.preventDefault();
         dropdown.classList.add("is-open");
@@ -141,6 +147,18 @@
       if (dropdown.contains(target)) return;
       dropdown.classList.remove("is-open");
     });
+  }
+
+  function setupServiceHeroBackground() {
+    if (!(serviceHeroRoot instanceof HTMLElement)) return;
+    const serviceHeroImage = serviceHeroRoot.querySelector(".service-hero-media");
+    if (!(serviceHeroImage instanceof HTMLImageElement)) return;
+
+    const imageUrl = serviceHeroImage.currentSrc || serviceHeroImage.src || "";
+    if (!imageUrl) return;
+
+    const escapedUrl = imageUrl.replace(/"/g, '\\"');
+    serviceHeroRoot.style.setProperty("--service-hero-bg", 'url("' + escapedUrl + '")');
   }
 
   function setupLanguageSwitcher() {
@@ -538,6 +556,9 @@
       if (!(target instanceof Element)) return;
       const anchor = target.closest("a");
       if (!(anchor instanceof HTMLAnchorElement)) return;
+
+      // Desktop/touch dropdown should manage its own open state.
+      if (window.innerWidth > compactNavBreakpoint) return;
 
       const isMobileServicesTrigger =
         anchor.classList.contains("site-nav__services-trigger") &&
@@ -1004,6 +1025,7 @@
   }
 
   loadState();
+  setupServiceHeroBackground();
   applyA11yState();
   refreshHomeHeroIntro();
   refreshExploreIntro();
