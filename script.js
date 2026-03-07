@@ -64,7 +64,7 @@
     const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
     const assetBase = getAssetBase();
     const languageOptions = [
-      { code: "en", label: "English", flagFile: "union_jack.png" },
+      { code: "en", label: "English", flagFile: "australia.png" },
       { code: "zh-CN", label: "Chinese", flagFile: "china.png" },
       { code: "ar", label: "Arabic", flagFile: "saudi_arabia.png" },
       { code: "it", label: "Italian", flagFile: "italy.png" },
