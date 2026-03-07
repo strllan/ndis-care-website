@@ -236,6 +236,7 @@
       const flagEl = toggle.querySelector(".language-switcher__flag-image");
       if (flagEl instanceof HTMLImageElement) {
         flagEl.src = assetBase + selectedLanguage.flagFile;
+        flagEl.dataset.langCode = selectedLanguage.code;
       }
       toggle.setAttribute("aria-label", "Current language: " + selectedLanguage.label);
       root.lang = selectedLanguage.code === "en" ? "en" : selectedLanguage.code;
