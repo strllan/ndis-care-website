@@ -54,6 +54,7 @@
   let offersCardObservers = [];
   let serviceHeroIntroPlayed = false;
   let serviceCardObservers = [];
+  let pageFadeObservers = [];
 
   if (exploreIntroRoot instanceof HTMLElement) {
     if (window.innerWidth > 700) {
@@ -908,6 +909,30 @@
 
   const serviceHeroIntroTargets = setupServiceHeroIntroTargets();
 
+  function setupPageFadeGroups() {
+    return Array.from(document.querySelectorAll(".page-fade-group"))
+      .map(function (groupRoot) {
+        if (!(groupRoot instanceof HTMLElement)) return null;
+
+        const items = Array.from(groupRoot.querySelectorAll(".page-fade-item")).filter(function (item) {
+          return item instanceof HTMLElement;
+        });
+
+        if (!items.length) return null;
+
+        items.forEach(function (item, index) {
+          item.style.setProperty("--page-fade-delay", String(index * 120) + "ms");
+        });
+
+        return { root: groupRoot, items: items };
+      })
+      .filter(function (group) {
+        return Boolean(group);
+      });
+  }
+
+  const pageFadeGroups = setupPageFadeGroups();
+
   function setupServiceCardGroups() {
     const groups = [];
 
@@ -996,6 +1021,14 @@
       observer.disconnect();
     });
     serviceCardObservers = [];
+  }
+
+  function disconnectPageFadeObservers() {
+    if (!pageFadeObservers.length) return;
+    pageFadeObservers.forEach(function (observer) {
+      observer.disconnect();
+    });
+    pageFadeObservers = [];
   }
 
   function applyOffersRowDelays() {
