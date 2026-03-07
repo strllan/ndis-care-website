@@ -39,6 +39,7 @@
   const exploreIntroRoot = document.querySelector(".home-explore");
   const offersIntroRoot = document.querySelector(".home-offers");
   const serviceHeroRoot = document.querySelector(".service-hero");
+  const serviceHeroGrid = document.querySelector(".service-hero-grid");
   const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let heroIntroPlayed = false;
   let heroSliderIndex = 0;
@@ -51,6 +52,8 @@
   let exploreCardObservers = [];
   let exploreRefreshTimer = 0;
   let offersCardObservers = [];
+  let serviceHeroIntroPlayed = false;
+  let serviceCardObservers = [];
 
   if (exploreIntroRoot instanceof HTMLElement) {
     if (window.innerWidth > 700) {
@@ -62,6 +65,10 @@
 
   if (offersIntroRoot instanceof HTMLElement) {
     offersIntroRoot.classList.add("is-intro-pending");
+  }
+
+  if (serviceHeroGrid instanceof HTMLElement) {
+    serviceHeroGrid.classList.add("is-intro-pending");
   }
 
   const serviceCatalogItems = [
@@ -668,6 +675,7 @@
       exploreRefreshTimer = window.setTimeout(function () {
         refreshExploreIntro();
         refreshOffersIntro();
+        refreshServiceCardIntros();
       }, 140);
     });
   }
@@ -886,6 +894,59 @@
 
   const exploreIntroTargets = setupExploreIntroTargets();
 
+  function setupServiceHeroIntroTargets() {
+    if (!(serviceHeroGrid instanceof HTMLElement)) return [];
+    return Array.from(serviceHeroGrid.children)
+      .filter(function (item) {
+        return item instanceof HTMLElement;
+      })
+      .map(function (item, index) {
+        item.style.setProperty("--service-hero-delay", String(index * 160) + "ms");
+        return item;
+      });
+  }
+
+  const serviceHeroIntroTargets = setupServiceHeroIntroTargets();
+
+  function setupServiceCardGroups() {
+    const groups = [];
+
+    document.querySelectorAll(".service-detail-columns").forEach(function (groupRoot) {
+      if (!(groupRoot instanceof HTMLElement)) return;
+
+      const cards = Array.from(groupRoot.children).filter(function (card) {
+        return (
+          card instanceof HTMLElement &&
+          card.matches(".service-detail-card, .service-detail-summary, .service-detail-media-card")
+        );
+      });
+
+      if (!cards.length) return;
+
+      groupRoot.classList.add("service-reveal-root");
+      cards.forEach(function (card) {
+        card.classList.add("service-reveal-item");
+      });
+
+      groups.push({ root: groupRoot, cards: cards });
+    });
+
+    document
+      .querySelectorAll(".service-detail-card, .service-detail-summary, .service-detail-media-card")
+      .forEach(function (card) {
+        if (!(card instanceof HTMLElement)) return;
+        if (card.closest(".service-hero-grid")) return;
+        if (card.closest(".service-detail-columns")) return;
+
+        card.classList.add("service-reveal-root", "service-reveal-item");
+        groups.push({ root: card, cards: [card] });
+      });
+
+    return groups;
+  }
+
+  const serviceCardGroups = setupServiceCardGroups();
+
   function setupOffersIntroTargets() {
     if (!(offersIntroRoot instanceof HTMLElement)) return [];
     return Array.from(offersIntroRoot.querySelectorAll(".offers-card")).filter(function (card) {
@@ -929,6 +990,14 @@
     offersCardObservers = [];
   }
 
+  function disconnectServiceCardObservers() {
+    if (!serviceCardObservers.length) return;
+    serviceCardObservers.forEach(function (observer) {
+      observer.disconnect();
+    });
+    serviceCardObservers = [];
+  }
+
   function applyOffersRowDelays() {
     if (!(offersIntroRoot instanceof HTMLElement) || offersIntroTargets.length === 0) return;
 
@@ -954,6 +1023,38 @@
       // Stagger left-to-right within each row: 1st, 2nd, 3rd, 4th.
       const delay = Math.min(cardIndexInRow * 140, 560);
       card.style.setProperty("--offers-delay", String(delay) + "ms");
+    });
+  }
+
+  function applyServiceCardDelays() {
+    if (!serviceCardGroups.length) return;
+
+    const tolerancePx = 6;
+
+    serviceCardGroups.forEach(function (group) {
+      const rowTops = [];
+      const rowCounts = [];
+
+      group.cards.forEach(function (card) {
+        if (!(card instanceof HTMLElement)) return;
+
+        const top = card.offsetTop;
+        let rowIndex = rowTops.findIndex(function (rowTop) {
+          return Math.abs(rowTop - top) <= tolerancePx;
+        });
+
+        if (rowIndex === -1) {
+          rowTops.push(top);
+          rowCounts.push(0);
+          rowIndex = rowTops.length - 1;
+        }
+
+        const cardIndexInRow = rowCounts[rowIndex];
+        rowCounts[rowIndex] = cardIndexInRow + 1;
+
+        const delay = Math.min(cardIndexInRow * 140, 420);
+        card.style.setProperty("--service-card-delay", String(delay) + "ms");
+      });
     });
   }
 
@@ -1090,6 +1191,72 @@
     });
   }
 
+  function refreshServiceHeroIntro() {
+    if (!(serviceHeroGrid instanceof HTMLElement) || serviceHeroIntroTargets.length === 0) return;
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      serviceHeroGrid.classList.remove("is-intro-pending");
+      serviceHeroGrid.classList.remove("is-intro-ready");
+      return;
+    }
+
+    if (serviceHeroIntroPlayed) return;
+    serviceHeroIntroPlayed = true;
+
+    serviceHeroGrid.classList.add("is-intro-pending");
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        serviceHeroGrid.classList.add("is-intro-ready");
+      });
+    });
+  }
+
+  function refreshServiceCardIntros() {
+    if (!serviceCardGroups.length) return;
+
+    disconnectServiceCardObservers();
+    applyServiceCardDelays();
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      serviceCardGroups.forEach(function (group) {
+        group.root.classList.remove("is-intro-pending");
+        group.cards.forEach(function (card) {
+          card.classList.remove("is-card-ready");
+        });
+      });
+      return;
+    }
+
+    serviceCardGroups.forEach(function (group) {
+      group.root.classList.add("is-intro-pending");
+
+      group.cards.forEach(function (card) {
+        if (!(card instanceof HTMLElement)) return;
+        if (card.classList.contains("is-card-ready")) return;
+
+        if (!("IntersectionObserver" in window)) {
+          card.classList.add("is-card-ready");
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          function (entries) {
+            if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+            if (!entries.some(function (entry) { return entry.intersectionRatio >= 0.2; })) return;
+            card.classList.add("is-card-ready");
+            observer.disconnect();
+          },
+          { threshold: [0.2], rootMargin: "0px 0px -6% 0px" }
+        );
+
+        observer.observe(card);
+        serviceCardObservers.push(observer);
+      });
+    });
+  }
+
   function resetA11yState() {
     state.fontScale = defaultScale;
     state.highContrast = false;
@@ -1107,6 +1274,8 @@
   refreshHomeHeroIntro();
   refreshExploreIntro();
   refreshOffersIntro();
+  refreshServiceHeroIntro();
+  refreshServiceCardIntros();
   setNavOpen(false);
   scrollToHashTarget();
 
@@ -1122,6 +1291,7 @@
         scrollToHashTarget();
       }
       refreshOffersIntro();
+      refreshServiceCardIntros();
     }, 120);
   });
 
@@ -1188,6 +1358,8 @@
       refreshHomeHeroIntro();
       refreshExploreIntro();
       refreshOffersIntro();
+      refreshServiceHeroIntro();
+      refreshServiceCardIntros();
       saveState();
     });
   });
