@@ -1241,14 +1241,18 @@
           return;
         }
 
+        const isTaiChiCard = card.classList.contains("service-detail-card--tai-chi");
+        const triggerRatio = isTaiChiCard ? 0.32 : 0.2;
+        const triggerRootMargin = isTaiChiCard ? "0px 0px -16% 0px" : "0px 0px -6% 0px";
+
         const observer = new IntersectionObserver(
           function (entries) {
             if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
-            if (!entries.some(function (entry) { return entry.intersectionRatio >= 0.2; })) return;
+            if (!entries.some(function (entry) { return entry.intersectionRatio >= triggerRatio; })) return;
             card.classList.add("is-card-ready");
             observer.disconnect();
           },
-          { threshold: [0.2], rootMargin: "0px 0px -6% 0px" }
+          { threshold: [triggerRatio], rootMargin: triggerRootMargin }
         );
 
         observer.observe(card);
