@@ -115,7 +115,7 @@
       itemLink.className = "site-nav__services-option";
       itemLink.href = cleanServicesHref + service.slug + "/";
       itemLink.textContent = service.label;
-      if (service.slug === "development-life-skills") {
+      if (service.slug === "group-centre-activities") {
         itemLink.classList.add("site-nav__services-option--alert");
       }
       itemLink.setAttribute("role", "menuitem");
