@@ -16,13 +16,36 @@
     return scriptSrc.slice(0, scriptSrc.lastIndexOf("/") + 1) + "assets/";
   }
 
+  function runWhenIdle(callback, timeout) {
+    const safeTimeout = Number.isFinite(timeout) ? Number(timeout) : 1800;
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(function () {
+        callback();
+      }, { timeout: safeTimeout });
+      return;
+    }
+    window.setTimeout(callback, safeTimeout);
+  }
+
   const navToggle = document.getElementById("nav-toggle");
   const siteNav = document.getElementById("site-nav");
   const compactNavBreakpoint = 700;
   const heroIntroRoot = document.querySelector(".home-hero-main");
+  const heroSliderSlides = Array.from(document.querySelectorAll(".home-hero-slider__slide")).filter(function (slide) {
+    return slide instanceof HTMLElement;
+  });
+  const HERO_SLIDE_HOLD_MS = 2500;
+  const HERO_SLIDE_FADE_MS = 1000;
+  const HERO_SLIDE_NEXT_DELAY_MS = 500;
+  const HERO_SLIDE_SETTLE_MS = HERO_SLIDE_NEXT_DELAY_MS + HERO_SLIDE_FADE_MS;
   const exploreIntroRoot = document.querySelector(".home-explore");
   const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let heroIntroPlayed = false;
+  let heroSliderIndex = 0;
+  let heroSliderRunning = false;
+  let heroSliderHoldTimer = 0;
+  let heroSliderFadeInTimer = 0;
+  let heroSliderCompleteTimer = 0;
   let exploreIntroPlayed = false;
   let exploreIntroObserver = null;
   let exploreCardObservers = [];
@@ -57,6 +80,7 @@
     const translationCache = new Map();
     const textEntries = [];
     const placeholderEntries = [];
+    let translationPrepared = false;
 
     function isTextTranslatable(value) {
       const text = (value || "").replace(/\s+/g, " ").trim();
@@ -75,6 +99,7 @@
     }
 
     function collectTranslatableContent() {
+      if (translationPrepared) return;
       const walker = document.createTreeWalker(body, NodeFilter.SHOW_TEXT, {
         acceptNode: function (node) {
           const parent = node.parentElement;
@@ -106,6 +131,12 @@
           original: placeholder
         });
       });
+      translationPrepared = true;
+    }
+
+    function ensureTranslationData() {
+      if (translationPrepared) return;
+      collectTranslatableContent();
     }
 
     function extractTranslatedText(data) {
@@ -214,13 +245,19 @@
       switcher.classList.add("is-loading");
 
       try {
+        if (selectedLanguage.code !== "en") {
+          ensureTranslationData();
+        }
+
         if (selectedLanguage.code === "en") {
-          textEntries.forEach(function (entry) {
-            entry.node.nodeValue = entry.original;
-          });
-          placeholderEntries.forEach(function (entry) {
-            entry.element.setAttribute("placeholder", entry.original);
-          });
+          if (translationPrepared) {
+            textEntries.forEach(function (entry) {
+              entry.node.nodeValue = entry.original;
+            });
+            placeholderEntries.forEach(function (entry) {
+              entry.element.setAttribute("placeholder", entry.original);
+            });
+          }
           return;
         }
 
@@ -298,8 +335,6 @@
         }
       });
 
-    collectTranslatableContent();
-
     let savedLanguage = "en";
     try {
       savedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY) || "en";
@@ -309,7 +344,88 @@
     applyLanguage(savedLanguage);
   }
 
-  setupLanguageSwitcher();
+  runWhenIdle(setupLanguageSwitcher, 2600);
+
+  function clearHeroSliderTimers() {
+    if (heroSliderHoldTimer) {
+      window.clearTimeout(heroSliderHoldTimer);
+      heroSliderHoldTimer = 0;
+    }
+    if (heroSliderFadeInTimer) {
+      window.clearTimeout(heroSliderFadeInTimer);
+      heroSliderFadeInTimer = 0;
+    }
+    if (heroSliderCompleteTimer) {
+      window.clearTimeout(heroSliderCompleteTimer);
+      heroSliderCompleteTimer = 0;
+    }
+  }
+
+  function resetHeroSlider() {
+    heroSliderIndex = 0;
+    heroSliderSlides.forEach(function (slide, index) {
+      slide.classList.toggle("is-active", index === 0);
+    });
+  }
+
+  function queueHeroSlideTransition() {
+    clearHeroSliderTimers();
+    heroSliderHoldTimer = window.setTimeout(function () {
+      if (!heroSliderRunning || heroSliderSlides.length < 2) return;
+
+      const currentSlide = heroSliderSlides[heroSliderIndex];
+      const nextIndex = (heroSliderIndex + 1) % heroSliderSlides.length;
+      const nextSlide = heroSliderSlides[nextIndex];
+
+      if (!(currentSlide instanceof HTMLElement) || !(nextSlide instanceof HTMLElement)) return;
+
+      currentSlide.classList.remove("is-active");
+      heroSliderFadeInTimer = window.setTimeout(function () {
+        if (!heroSliderRunning) return;
+        nextSlide.classList.add("is-active");
+      }, HERO_SLIDE_NEXT_DELAY_MS);
+
+      heroSliderCompleteTimer = window.setTimeout(function () {
+        if (!heroSliderRunning) return;
+        heroSliderSlides.forEach(function (slide, index) {
+          slide.classList.toggle("is-active", index === nextIndex);
+        });
+        heroSliderIndex = nextIndex;
+        queueHeroSlideTransition();
+      }, HERO_SLIDE_SETTLE_MS);
+    }, HERO_SLIDE_HOLD_MS);
+  }
+
+  function startHeroSlider() {
+    if (heroSliderRunning || heroSliderSlides.length < 2) return;
+    const existingActiveIndex = heroSliderSlides.findIndex(function (slide) {
+      return slide.classList.contains("is-active");
+    });
+    heroSliderIndex = existingActiveIndex >= 0 ? existingActiveIndex : 0;
+    heroSliderSlides.forEach(function (slide, index) {
+      slide.classList.toggle("is-active", index === heroSliderIndex);
+    });
+    heroSliderRunning = true;
+    queueHeroSlideTransition();
+  }
+
+  function stopHeroSlider(reset) {
+    heroSliderRunning = false;
+    clearHeroSliderTimers();
+    if (reset) {
+      resetHeroSlider();
+    }
+  }
+
+  function refreshHeroSliderMotion() {
+    if (heroSliderSlides.length === 0) return;
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      stopHeroSlider(true);
+      return;
+    }
+    startHeroSlider();
+  }
 
   function setNavOpen(open) {
     if (!(navToggle instanceof HTMLButtonElement) || !(siteNav instanceof HTMLElement)) {
@@ -470,6 +586,8 @@
     setPressed("toggle-underline-links", state.underlineLinks);
     setPressed("toggle-readable-font", state.readableFont);
     setPressed("toggle-reduce-motion", state.reduceMotion);
+
+    refreshHeroSliderMotion();
   }
 
   function setupHomeHeroIntroTargets() {
