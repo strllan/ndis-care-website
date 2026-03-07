@@ -375,11 +375,19 @@
     menu.hidden = true;
     menu.setAttribute("role", "menu");
     menu.setAttribute("aria-label", "Language options");
+    let menuCloseTimer = 0;
+    const MENU_FADE_DURATION_MS = 180;
 
     function getLanguageByCode(code) {
       return languageOptions.find(function (option) {
         return option.code === code;
       });
+    }
+
+    function clearMenuCloseTimer() {
+      if (!menuCloseTimer) return;
+      window.clearTimeout(menuCloseTimer);
+      menuCloseTimer = 0;
     }
 
     languageOptions.forEach(function (option) {
@@ -406,8 +414,28 @@
     });
 
     function setMenuOpen(open) {
-      menu.hidden = !open;
-      switcher.classList.toggle("is-open", open);
+      clearMenuCloseTimer();
+
+      if (open) {
+        menu.hidden = false;
+        window.requestAnimationFrame(function () {
+          window.requestAnimationFrame(function () {
+            switcher.classList.add("is-open");
+          });
+        });
+      } else {
+        switcher.classList.remove("is-open");
+
+        if (!menu.hidden) {
+          menuCloseTimer = window.setTimeout(function () {
+            if (!switcher.classList.contains("is-open")) {
+              menu.hidden = true;
+            }
+            menuCloseTimer = 0;
+          }, MENU_FADE_DURATION_MS);
+        }
+      }
+
       toggle.setAttribute("aria-expanded", String(open));
     }
 
@@ -457,7 +485,7 @@
     }
 
     toggle.addEventListener("click", function () {
-      setMenuOpen(menu.hidden);
+      setMenuOpen(!switcher.classList.contains("is-open"));
     });
 
     menu.addEventListener("click", async function (event) {
