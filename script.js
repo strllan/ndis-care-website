@@ -57,6 +57,85 @@
     }
   }
 
+  const serviceCatalogItems = [
+    { id: "assist-access-maintain-employment", label: "Assist Access / Maintain Employment" },
+    { id: "assist-life-stage-transition", label: "Assist-Life Stage, Transition" },
+    { id: "assist-personal-activities", label: "Assist-Personal Activities" },
+    { id: "assist-travel-transport", label: "Assist-Travel / Transport" },
+    { id: "community-nursing-care", label: "Community Nursing Care" },
+    { id: "daily-tasks-shared-living", label: "Daily Tasks / Shared Living" },
+    { id: "innovative-community-participation", label: "Innovative Community Participation" },
+    { id: "development-life-skills", label: "Development-Life Skills" },
+    { id: "household-tasks", label: "Household Tasks" },
+    { id: "participate-community", label: "Participate Community" },
+    { id: "specialised-support-employment", label: "Specialised Support Employment" },
+    { id: "group-centre-activities", label: "Group / Centre Activities" }
+  ];
+
+  function setupServicesDropdown() {
+    if (!(siteNav instanceof HTMLElement)) return;
+    if (siteNav.querySelector(".site-nav__services-dropdown")) return;
+
+    const servicesLink = Array.from(siteNav.children).find(function (item) {
+      return item instanceof HTMLAnchorElement && (item.textContent || "").trim() === "Services";
+    });
+    if (!(servicesLink instanceof HTMLAnchorElement)) return;
+
+    const servicesHref = servicesLink.getAttribute("href") || "./services/";
+    const cleanServicesHref = servicesHref.replace(/#.*$/, "");
+
+    const dropdown = document.createElement("div");
+    dropdown.className = "site-nav__services-dropdown";
+
+    const trigger = document.createElement("a");
+    trigger.className = "site-nav__services-trigger";
+    trigger.href = cleanServicesHref;
+    if (servicesLink.getAttribute("aria-current") === "page") {
+      trigger.setAttribute("aria-current", "page");
+    }
+    trigger.innerHTML =
+      '<span>Services</span><span class="site-nav__services-arrow" aria-hidden="true">&gt;</span>';
+
+    const menu = document.createElement("div");
+    menu.className = "site-nav__services-menu";
+    menu.setAttribute("role", "menu");
+    menu.setAttribute("aria-label", "Services menu");
+
+    serviceCatalogItems.forEach(function (service) {
+      const itemLink = document.createElement("a");
+      itemLink.className = "site-nav__services-option";
+      itemLink.href = cleanServicesHref + "#" + service.id;
+      itemLink.textContent = service.label;
+      itemLink.setAttribute("role", "menuitem");
+      menu.appendChild(itemLink);
+    });
+
+    dropdown.appendChild(trigger);
+    dropdown.appendChild(menu);
+    servicesLink.replaceWith(dropdown);
+
+    trigger.addEventListener("click", function (event) {
+      if (window.innerWidth > compactNavBreakpoint) return;
+      if (!dropdown.classList.contains("is-open")) {
+        event.preventDefault();
+        dropdown.classList.add("is-open");
+      }
+    });
+
+    dropdown.addEventListener("keydown", function (event) {
+      if (event.key !== "Escape") return;
+      dropdown.classList.remove("is-open");
+      trigger.focus();
+    });
+
+    document.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (dropdown.contains(target)) return;
+      dropdown.classList.remove("is-open");
+    });
+  }
+
   function setupLanguageSwitcher() {
     if (!(siteNav instanceof HTMLElement) || !body) return;
     if (siteNav.querySelector(".language-switcher")) return;
@@ -343,6 +422,7 @@
     applyLanguage(savedLanguage);
   }
 
+  setupServicesDropdown();
   runWhenIdle(setupLanguageSwitcher, 2600);
 
   function clearHeroSliderTimers() {
@@ -433,6 +513,9 @@
       return;
     }
     siteNav.classList.toggle("is-open", open);
+    siteNav.querySelectorAll(".site-nav__services-dropdown.is-open").forEach(function (dropdown) {
+      dropdown.classList.remove("is-open");
+    });
     navToggle.setAttribute("aria-expanded", String(open));
     navToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
   }
@@ -443,10 +526,18 @@
       setNavOpen(nextOpen);
     });
 
-    siteNav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", function () {
-        setNavOpen(false);
-      });
+    siteNav.addEventListener("click", function (event) {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const anchor = target.closest("a");
+      if (!(anchor instanceof HTMLAnchorElement)) return;
+
+      const isMobileServicesTrigger =
+        anchor.classList.contains("site-nav__services-trigger") &&
+        window.innerWidth <= compactNavBreakpoint;
+
+      if (isMobileServicesTrigger) return;
+      setNavOpen(false);
     });
 
     document.addEventListener("click", function (event) {
