@@ -1201,6 +1201,96 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   padding-top: 0.25rem;
 }
 
+.service-card__actions {
+  margin-top: auto;
+  padding-top: 0.2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.service-detail-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.service-detail-media-card,
+.service-detail-summary,
+.service-detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.service-detail-media-card {
+  overflow: clip;
+}
+
+.service-detail-media {
+  width: 100%;
+  height: 100%;
+  min-height: 18.5rem;
+  object-fit: cover;
+  display: block;
+}
+
+.service-detail-summary {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.service-detail-summary h2,
+.service-detail-card h2 {
+  margin: 0;
+  font-size: clamp(1.24rem, 1.8vw, 1.52rem);
+  line-height: 1.2;
+}
+
+.service-detail-summary p,
+.service-detail-card p {
+  margin: 0;
+  color: #23445f;
+}
+
+.service-detail-cta-row {
+  margin-top: auto;
+  padding-top: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.service-detail-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.service-detail-card {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.service-detail-card ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.service-detail-note {
+  margin-top: auto !important;
+  color: #2d5271 !important;
+  font-weight: 600;
+}
+
 .about-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1706,6 +1796,14 @@ body.a11y-reduce-motion .home-hero-slider__slide {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .service-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-detail-columns {
+    grid-template-columns: 1fr;
+  }
+
   .contact-grid {
     grid-template-columns: 1fr;
   }
@@ -2030,6 +2128,15 @@ body.a11y-reduce-motion .home-hero-slider__slide {
 
   .service-grid {
     grid-template-columns: 1fr;
+  }
+
+  .service-detail-summary,
+  .service-detail-card {
+    padding: 1rem;
+  }
+
+  .service-detail-media {
+    min-height: 14rem;
   }
 
   .explore-grid {
