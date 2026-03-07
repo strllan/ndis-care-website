@@ -78,12 +78,6 @@
     { slug: "specialised-support-employment", label: "Specialised Support Employment" },
     { slug: "group-centre-activities", label: "Group / Centre Activities" }
   ];
-  const primaryServiceSlug = serviceCatalogItems[0] ? serviceCatalogItems[0].slug : "";
-
-  function shouldUseTapDropdownBehavior() {
-    if (window.innerWidth <= compactNavBreakpoint) return true;
-    return window.matchMedia("(hover: none), (pointer: coarse)").matches;
-  }
 
   function setupServicesDropdown() {
     if (!(siteNav instanceof HTMLElement)) return;
@@ -102,7 +96,9 @@
 
     const trigger = document.createElement("a");
     trigger.className = "site-nav__services-trigger";
-    trigger.href = primaryServiceSlug ? cleanServicesHref + primaryServiceSlug + "/" : cleanServicesHref;
+    trigger.href = cleanServicesHref;
+    trigger.setAttribute("aria-haspopup", "menu");
+    trigger.setAttribute("aria-expanded", "false");
     if (servicesLink.getAttribute("aria-current") === "page") {
       trigger.setAttribute("aria-current", "page");
     }
@@ -119,6 +115,9 @@
       itemLink.className = "site-nav__services-option";
       itemLink.href = cleanServicesHref + service.slug + "/";
       itemLink.textContent = service.label;
+      if (service.slug === "development-life-skills") {
+        itemLink.classList.add("site-nav__services-option--alert");
+      }
       itemLink.setAttribute("role", "menuitem");
       menu.appendChild(itemLink);
     });
@@ -128,24 +127,17 @@
     servicesLink.replaceWith(dropdown);
 
     trigger.addEventListener("click", function (event) {
-      if (!shouldUseTapDropdownBehavior()) return;
-      if (!dropdown.classList.contains("is-open")) {
-        event.preventDefault();
-        dropdown.classList.add("is-open");
-      }
+      event.preventDefault();
+      const nextOpen = !dropdown.classList.contains("is-open");
+      dropdown.classList.toggle("is-open", nextOpen);
+      trigger.setAttribute("aria-expanded", String(nextOpen));
     });
 
     dropdown.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
       dropdown.classList.remove("is-open");
+      trigger.setAttribute("aria-expanded", "false");
       trigger.focus();
-    });
-
-    document.addEventListener("click", function (event) {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-      if (dropdown.contains(target)) return;
-      dropdown.classList.remove("is-open");
     });
   }
 
@@ -180,9 +172,11 @@
       { code: "ne", label: "Nepali", flagFile: "languages/nepal.png" }
     ];
     const translationCache = new Map();
+    const translationPending = new Map();
     const textEntries = [];
     const placeholderEntries = [];
     let translationPrepared = false;
+    let preloadStarted = false;
 
     function isTextTranslatable(value) {
       const text = (value || "").replace(/\s+/g, " ").trim();
@@ -259,22 +253,96 @@
         return translationCache.get(cacheKey) || normalized;
       }
 
-      try {
-        const url =
-          "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
-          encodeURIComponent(langCode) +
-          "&dt=t&q=" +
-          encodeURIComponent(normalized);
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Translation request failed");
-        const data = await response.json();
-        const translated = extractTranslatedText(data) || normalized;
-        translationCache.set(cacheKey, translated);
-      } catch (_error) {
-        translationCache.set(cacheKey, normalized);
+      if (translationPending.has(cacheKey)) {
+        return translationPending.get(cacheKey);
       }
 
-      return translationCache.get(cacheKey) || normalized;
+      const pendingJob = (async function () {
+        try {
+          const url =
+            "https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=" +
+            encodeURIComponent(langCode) +
+            "&dt=t&q=" +
+            encodeURIComponent(normalized);
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Translation request failed");
+          const data = await response.json();
+          const translated = extractTranslatedText(data) || normalized;
+          translationCache.set(cacheKey, translated);
+        } catch (_error) {
+          translationCache.set(cacheKey, normalized);
+        } finally {
+          translationPending.delete(cacheKey);
+        }
+        return translationCache.get(cacheKey) || normalized;
+      })();
+      translationPending.set(cacheKey, pendingJob);
+
+      return pendingJob;
+    }
+
+    function preloadLanguageFlags() {
+      languageOptions.forEach(function (option) {
+        const flagImage = new Image();
+        flagImage.src = assetBase + option.flagFile;
+      });
+    }
+
+    function collectUniqueTranslatableValues() {
+      ensureTranslationData();
+      const values = new Set();
+
+      textEntries.forEach(function (entry) {
+        const normalized = (entry.original || "").trim();
+        if (normalized) values.add(normalized);
+      });
+
+      placeholderEntries.forEach(function (entry) {
+        const normalized = (entry.original || "").trim();
+        if (normalized) values.add(normalized);
+      });
+
+      return Array.from(values);
+    }
+
+    async function preloadLanguageTranslations() {
+      if (preloadStarted) return;
+      preloadStarted = true;
+      preloadLanguageFlags();
+
+      const values = collectUniqueTranslatableValues();
+      if (!values.length) return;
+
+      const targetLanguages = languageOptions
+        .map(function (option) {
+          return option.code;
+        })
+        .filter(function (code) {
+          return code !== "en";
+        });
+
+      const queue = [];
+      targetLanguages.forEach(function (langCode) {
+        values.forEach(function (value) {
+          const cacheKey = langCode + "::" + value;
+          if (!translationCache.has(cacheKey)) {
+            queue.push({ value: value, langCode: langCode });
+          }
+        });
+      });
+
+      const batchSize = 6;
+      for (let index = 0; index < queue.length; index += batchSize) {
+        const batch = queue.slice(index, index + batchSize);
+        await Promise.all(
+          batch.map(function (item) {
+            return translateText(item.value, item.langCode);
+          })
+        );
+        await new Promise(function (resolve) {
+          window.setTimeout(resolve, 40);
+        });
+      }
     }
 
     const switcher = document.createElement("div");
@@ -445,6 +513,11 @@
       savedLanguage = "en";
     }
     applyLanguage(savedLanguage);
+    runWhenIdle(function () {
+      preloadLanguageTranslations().catch(function () {
+        // Ignore preload failures and rely on on-demand translation.
+      });
+    }, 400);
   }
 
   setupServicesDropdown();
@@ -540,6 +613,10 @@
     siteNav.classList.toggle("is-open", open);
     siteNav.querySelectorAll(".site-nav__services-dropdown.is-open").forEach(function (dropdown) {
       dropdown.classList.remove("is-open");
+      const trigger = dropdown.querySelector(".site-nav__services-trigger");
+      if (trigger instanceof HTMLElement) {
+        trigger.setAttribute("aria-expanded", "false");
+      }
     });
     navToggle.setAttribute("aria-expanded", String(open));
     navToggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");

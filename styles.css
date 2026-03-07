@@ -420,6 +420,27 @@ main {
   background: #eaf4fd;
 }
 
+.site-nav__services-option--alert {
+  gap: 0.36rem;
+}
+
+.site-nav__services-option--alert::after {
+  content: "!";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.02rem;
+  height: 1.02rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: linear-gradient(145deg, #ff5b5b, #cf1a1a);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(176, 22, 22, 0.34);
+}
+
 .language-switcher {
   position: relative;
   display: flex;
