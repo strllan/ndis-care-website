@@ -635,6 +635,26 @@
     target.scrollIntoView({ block: "start", behavior });
   }
 
+  function isReloadNavigation() {
+    const navEntries = typeof performance.getEntriesByType === "function"
+      ? performance.getEntriesByType("navigation")
+      : [];
+    const navEntry = Array.isArray(navEntries) && navEntries.length ? navEntries[0] : null;
+    if (navEntry && typeof navEntry.type === "string") {
+      return navEntry.type === "reload";
+    }
+    if (performance && performance.navigation && typeof performance.navigation.type === "number") {
+      return performance.navigation.type === 1;
+    }
+    return false;
+  }
+
+  function forceTopOnReload() {
+    if (!isReloadNavigation()) return;
+    if (window.location.hash && window.location.hash.length > 1) return;
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }
+
   function clamp(value, min, max) {
     return Math.min(max, Math.max(min, value));
   }
@@ -986,6 +1006,7 @@
   refreshExploreIntro();
   refreshOffersIntro();
   setNavOpen(false);
+  forceTopOnReload();
   scrollToHashTarget();
 
   window.addEventListener("hashchange", function () {
@@ -994,6 +1015,7 @@
 
   window.addEventListener("load", function () {
     window.setTimeout(function () {
+      forceTopOnReload();
       scrollToHashTarget();
       refreshOffersIntro();
     }, 120);
