@@ -168,23 +168,22 @@
     const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
     const assetBase = getAssetBase();
     const languageOptions = [
-      { code: "en", label: "English", flagFile: "languages/australia.png" },
-      { code: "zh-CN", label: "Chinese", flagFile: "languages/china.png" },
-      { code: "ar", label: "Arabic", flagFile: "languages/saudi_arabia.png" },
-      { code: "it", label: "Italian", flagFile: "languages/italy.png" },
-      { code: "fr", label: "French", flagFile: "languages/france.png" },
-      { code: "el", label: "Greek", flagFile: "languages/greece.png" },
-      { code: "hi", label: "Hindi", flagFile: "languages/india.png" },
-      { code: "es", label: "Spanish", flagFile: "languages/spain.png" },
-      { code: "vi", label: "Vietnamese", flagFile: "languages/vietnam.png" },
-      { code: "ne", label: "Nepali", flagFile: "languages/nepal.png" }
+      { code: "en", label: "English", flagFile: "languages/australia.webp" },
+      { code: "zh-CN", label: "Chinese", flagFile: "languages/china.webp" },
+      { code: "ar", label: "Arabic", flagFile: "languages/saudi_arabia.webp" },
+      { code: "it", label: "Italian", flagFile: "languages/italy.webp" },
+      { code: "fr", label: "French", flagFile: "languages/france.webp" },
+      { code: "el", label: "Greek", flagFile: "languages/greece.webp" },
+      { code: "hi", label: "Hindi", flagFile: "languages/india.webp" },
+      { code: "es", label: "Spanish", flagFile: "languages/spain.webp" },
+      { code: "vi", label: "Vietnamese", flagFile: "languages/vietnam.webp" },
+      { code: "ne", label: "Nepali", flagFile: "languages/nepal.webp" }
     ];
     const translationCache = new Map();
     const translationPending = new Map();
     const textEntries = [];
     const placeholderEntries = [];
     let translationPrepared = false;
-    let preloadStarted = false;
 
     function isTextTranslatable(value) {
       const text = (value || "").replace(/\s+/g, " ").trim();
@@ -287,70 +286,6 @@
       translationPending.set(cacheKey, pendingJob);
 
       return pendingJob;
-    }
-
-    function preloadLanguageFlags() {
-      languageOptions.forEach(function (option) {
-        const flagImage = new Image();
-        flagImage.src = assetBase + option.flagFile;
-      });
-    }
-
-    function collectUniqueTranslatableValues() {
-      ensureTranslationData();
-      const values = new Set();
-
-      textEntries.forEach(function (entry) {
-        const normalized = (entry.original || "").trim();
-        if (normalized) values.add(normalized);
-      });
-
-      placeholderEntries.forEach(function (entry) {
-        const normalized = (entry.original || "").trim();
-        if (normalized) values.add(normalized);
-      });
-
-      return Array.from(values);
-    }
-
-    async function preloadLanguageTranslations() {
-      if (preloadStarted) return;
-      preloadStarted = true;
-      preloadLanguageFlags();
-
-      const values = collectUniqueTranslatableValues();
-      if (!values.length) return;
-
-      const targetLanguages = languageOptions
-        .map(function (option) {
-          return option.code;
-        })
-        .filter(function (code) {
-          return code !== "en";
-        });
-
-      const queue = [];
-      targetLanguages.forEach(function (langCode) {
-        values.forEach(function (value) {
-          const cacheKey = langCode + "::" + value;
-          if (!translationCache.has(cacheKey)) {
-            queue.push({ value: value, langCode: langCode });
-          }
-        });
-      });
-
-      const batchSize = 6;
-      for (let index = 0; index < queue.length; index += batchSize) {
-        const batch = queue.slice(index, index + batchSize);
-        await Promise.all(
-          batch.map(function (item) {
-            return translateText(item.value, item.langCode);
-          })
-        );
-        await new Promise(function (resolve) {
-          window.setTimeout(resolve, 40);
-        });
-      }
     }
 
     const switcher = document.createElement("div");
@@ -549,11 +484,6 @@
       savedLanguage = "en";
     }
     applyLanguage(savedLanguage);
-    runWhenIdle(function () {
-      preloadLanguageTranslations().catch(function () {
-        // Ignore preload failures and rely on on-demand translation.
-      });
-    }, 400);
   }
 
   setupServicesDropdown();

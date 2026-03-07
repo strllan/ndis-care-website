@@ -1995,7 +1995,7 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   align-self: center;
   width: clamp(7.8rem, 17vw, 11rem);
   aspect-ratio: 1418 / 592;
-  background: url("assets/registered ndis provider.png") right bottom / contain no-repeat;
+  background: url("assets/registered-ndis-provider.webp") right bottom / contain no-repeat;
   transform: translateY(1.15rem);
 }
 
