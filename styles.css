@@ -175,9 +175,10 @@ main {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(200, 220, 237, 0.85);
+  background: rgba(246, 252, 255, 0.78);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid rgba(200, 220, 237, 0.72);
 }
 
 .site-header__inner {
@@ -1282,7 +1283,7 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   height: 0.95rem;
   border-top: 3px solid #ffffff;
   border-left: 3px solid #ffffff;
-  transform: rotate(45deg);
+  transform: translateY(0.14rem) rotate(45deg);
 }
 
 .a11y-panel {
