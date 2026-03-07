@@ -37,6 +37,7 @@
   const HERO_SLIDE_HOLD_MS = 2500;
   const HERO_SLIDE_FADE_MS = 1000;
   const exploreIntroRoot = document.querySelector(".home-explore");
+  const offersIntroRoot = document.querySelector(".home-offers");
   const prefersReducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let heroIntroPlayed = false;
   let heroSliderIndex = 0;
@@ -48,6 +49,7 @@
   let exploreIntroObserver = null;
   let exploreCardObservers = [];
   let exploreRefreshTimer = 0;
+  let offersCardObservers = [];
 
   if (exploreIntroRoot instanceof HTMLElement) {
     if (window.innerWidth > 700) {
@@ -55,6 +57,10 @@
     } else {
       exploreIntroRoot.classList.add("is-mobile-intro");
     }
+  }
+
+  if (offersIntroRoot instanceof HTMLElement) {
+    offersIntroRoot.classList.add("is-intro-pending");
   }
 
   const serviceCatalogItems = [
@@ -562,6 +568,7 @@
       }
       exploreRefreshTimer = window.setTimeout(function () {
         refreshExploreIntro();
+        refreshOffersIntro();
       }, 140);
     });
   }
@@ -757,6 +764,15 @@
 
   const exploreIntroTargets = setupExploreIntroTargets();
 
+  function setupOffersIntroTargets() {
+    if (!(offersIntroRoot instanceof HTMLElement)) return [];
+    return Array.from(offersIntroRoot.querySelectorAll(".offers-card")).filter(function (card) {
+      return card instanceof HTMLElement;
+    });
+  }
+
+  const offersIntroTargets = setupOffersIntroTargets();
+
   function playExploreIntro() {
     if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
     if (exploreIntroPlayed) return;
@@ -781,6 +797,36 @@
       observer.disconnect();
     });
     exploreCardObservers = [];
+  }
+
+  function disconnectOffersCardObservers() {
+    if (!offersCardObservers.length) return;
+    offersCardObservers.forEach(function (observer) {
+      observer.disconnect();
+    });
+    offersCardObservers = [];
+  }
+
+  function applyOffersRowDelays() {
+    if (!(offersIntroRoot instanceof HTMLElement) || offersIntroTargets.length === 0) return;
+
+    const rowTops = [];
+    const tolerancePx = 6;
+
+    offersIntroTargets.forEach(function (card) {
+      const top = card.offsetTop;
+      let rowIndex = rowTops.findIndex(function (rowTop) {
+        return Math.abs(rowTop - top) <= tolerancePx;
+      });
+
+      if (rowIndex === -1) {
+        rowTops.push(top);
+        rowIndex = rowTops.length - 1;
+      }
+
+      const delay = Math.min(rowIndex * 140, 700);
+      card.style.setProperty("--offers-delay", String(delay) + "ms");
+    });
   }
 
   function setupMobileExploreIntro() {
@@ -873,6 +919,49 @@
     exploreIntroObserver.observe(exploreIntroRoot);
   }
 
+  function refreshOffersIntro() {
+    if (!(offersIntroRoot instanceof HTMLElement) || offersIntroTargets.length === 0) return;
+
+    disconnectOffersCardObservers();
+    applyOffersRowDelays();
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      offersIntroRoot.classList.remove("is-intro-pending");
+      offersIntroTargets.forEach(function (card) {
+        card.classList.add("is-card-ready");
+      });
+      return;
+    }
+
+    offersIntroRoot.classList.add("is-intro-pending");
+
+    if (!("IntersectionObserver" in window)) {
+      offersIntroTargets.forEach(function (card) {
+        card.classList.add("is-card-ready");
+      });
+      return;
+    }
+
+    offersIntroTargets.forEach(function (card) {
+      if (!(card instanceof HTMLElement)) return;
+      if (card.classList.contains("is-card-ready")) return;
+
+      const observer = new IntersectionObserver(
+        function (entries) {
+          if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+          if (!entries.some(function (entry) { return entry.intersectionRatio >= 0.2; })) return;
+          card.classList.add("is-card-ready");
+          observer.disconnect();
+        },
+        { threshold: [0.2], rootMargin: "0px 0px -6% 0px" }
+      );
+
+      observer.observe(card);
+      offersCardObservers.push(observer);
+    });
+  }
+
   function resetA11yState() {
     state.fontScale = defaultScale;
     state.highContrast = false;
@@ -888,6 +977,7 @@
   applyA11yState();
   refreshHomeHeroIntro();
   refreshExploreIntro();
+  refreshOffersIntro();
   setNavOpen(false);
   scrollToHashTarget();
 
@@ -896,7 +986,10 @@
   });
 
   window.addEventListener("load", function () {
-    window.setTimeout(scrollToHashTarget, 120);
+    window.setTimeout(function () {
+      scrollToHashTarget();
+      refreshOffersIntro();
+    }, 120);
   });
 
   if (a11yToggle) {
@@ -961,6 +1054,7 @@
       applyA11yState();
       refreshHomeHeroIntro();
       refreshExploreIntro();
+      refreshOffersIntro();
       saveState();
     });
   });
