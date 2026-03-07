@@ -64,18 +64,18 @@
   }
 
   const serviceCatalogItems = [
-    { id: "assist-access-maintain-employment", label: "Assist Access / Maintain Employment" },
-    { id: "assist-life-stage-transition", label: "Assist-Life Stage, Transition" },
-    { id: "assist-personal-activities", label: "Assist-Personal Activities" },
-    { id: "assist-travel-transport", label: "Assist-Travel / Transport" },
-    { id: "community-nursing-care", label: "Community Nursing Care" },
-    { id: "daily-tasks-shared-living", label: "Daily Tasks / Shared Living" },
-    { id: "innovative-community-participation", label: "Innovative Community Participation" },
-    { id: "development-life-skills", label: "Development-Life Skills" },
-    { id: "household-tasks", label: "Household Tasks" },
-    { id: "participate-community", label: "Participate Community" },
-    { id: "specialised-support-employment", label: "Specialised Support Employment" },
-    { id: "group-centre-activities", label: "Group / Centre Activities" }
+    { slug: "assist-access-maintain-employment", label: "Assist Access / Maintain Employment" },
+    { slug: "assist-life-stage-transition", label: "Assist-Life Stage, Transition" },
+    { slug: "assist-personal-activities", label: "Assist-Personal Activities" },
+    { slug: "assist-travel-transport", label: "Assist-Travel / Transport" },
+    { slug: "community-nursing-care", label: "Community Nursing Care" },
+    { slug: "daily-tasks-shared-living", label: "Daily Tasks / Shared Living" },
+    { slug: "innovative-community-participation", label: "Innovative Community Participation" },
+    { slug: "development-life-skills", label: "Development-Life Skills" },
+    { slug: "household-tasks", label: "Household Tasks" },
+    { slug: "participate-community", label: "Participate Community" },
+    { slug: "specialised-support-employment", label: "Specialised Support Employment" },
+    { slug: "group-centre-activities", label: "Group / Centre Activities" }
   ];
 
   function setupServicesDropdown() {
@@ -110,7 +110,7 @@
     serviceCatalogItems.forEach(function (service) {
       const itemLink = document.createElement("a");
       itemLink.className = "site-nav__services-option";
-      itemLink.href = cleanServicesHref + "#" + service.id;
+      itemLink.href = cleanServicesHref + service.slug + "/";
       itemLink.textContent = service.label;
       itemLink.setAttribute("role", "menuitem");
       menu.appendChild(itemLink);
