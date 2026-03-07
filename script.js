@@ -77,6 +77,7 @@
     { slug: "specialised-support-employment", label: "Specialised Support Employment" },
     { slug: "group-centre-activities", label: "Group / Centre Activities" }
   ];
+  const primaryServiceSlug = serviceCatalogItems[0] ? serviceCatalogItems[0].slug : "";
 
   function setupServicesDropdown() {
     if (!(siteNav instanceof HTMLElement)) return;
@@ -95,7 +96,7 @@
 
     const trigger = document.createElement("a");
     trigger.className = "site-nav__services-trigger";
-    trigger.href = cleanServicesHref;
+    trigger.href = primaryServiceSlug ? cleanServicesHref + primaryServiceSlug + "/" : cleanServicesHref;
     if (servicesLink.getAttribute("aria-current") === "page") {
       trigger.setAttribute("aria-current", "page");
     }
