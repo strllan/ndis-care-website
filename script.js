@@ -649,10 +649,13 @@
     return false;
   }
 
-  function forceTopOnReload() {
-    if (!isReloadNavigation()) return;
-    if (window.location.hash && window.location.hash.length > 1) return;
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  function hasNavigableHash() {
+    return Boolean(window.location.hash && window.location.hash.length > 1);
+  }
+
+  const shouldForceTopOnReload = isReloadNavigation() && !hasNavigableHash();
+  if (shouldForceTopOnReload && "scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
   }
 
   function clamp(value, min, max) {
@@ -1006,7 +1009,6 @@
   refreshExploreIntro();
   refreshOffersIntro();
   setNavOpen(false);
-  forceTopOnReload();
   scrollToHashTarget();
 
   window.addEventListener("hashchange", function () {
@@ -1015,8 +1017,11 @@
 
   window.addEventListener("load", function () {
     window.setTimeout(function () {
-      forceTopOnReload();
-      scrollToHashTarget();
+      if (shouldForceTopOnReload) {
+        window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      } else {
+        scrollToHashTarget();
+      }
       refreshOffersIntro();
     }, 120);
   });
