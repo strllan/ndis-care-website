@@ -812,6 +812,7 @@
     if (!(offersIntroRoot instanceof HTMLElement) || offersIntroTargets.length === 0) return;
 
     const rowTops = [];
+    const rowCounts = [];
     const tolerancePx = 6;
 
     offersIntroTargets.forEach(function (card) {
@@ -822,10 +823,15 @@
 
       if (rowIndex === -1) {
         rowTops.push(top);
+        rowCounts.push(0);
         rowIndex = rowTops.length - 1;
       }
 
-      const delay = Math.min(rowIndex * 140, 700);
+      const cardIndexInRow = rowCounts[rowIndex];
+      rowCounts[rowIndex] = cardIndexInRow + 1;
+
+      // Stagger left-to-right within each row: 1st, 2nd, 3rd, 4th.
+      const delay = Math.min(cardIndexInRow * 140, 560);
       card.style.setProperty("--offers-delay", String(delay) + "ms");
     });
   }
