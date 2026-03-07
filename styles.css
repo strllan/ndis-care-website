@@ -1065,6 +1065,17 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   font-weight: 800;
 }
 
+.offers-card__action {
+  margin-top: 0.1rem;
+}
+
+.offers-card__button {
+  padding: 0.36rem 0.72rem;
+  font-size: 0.74rem;
+  line-height: 1;
+  box-shadow: 0 5px 14px rgba(24, 138, 205, 0.3);
+}
+
 .offers-cta {
   margin: 1rem 0 0;
 }
