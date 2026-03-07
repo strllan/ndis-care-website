@@ -677,6 +677,7 @@
         refreshExploreIntro();
         refreshOffersIntro();
         refreshServiceCardIntros();
+        refreshPageFadeGroups();
       }, 140);
     });
   }
@@ -1091,6 +1092,50 @@
     });
   }
 
+  function refreshPageFadeGroups() {
+    if (!pageFadeGroups.length) return;
+
+    disconnectPageFadeObservers();
+
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    if (motionDisabled) {
+      pageFadeGroups.forEach(function (group) {
+        group.root.classList.remove("is-intro-pending");
+        group.items.forEach(function (item) {
+          item.classList.remove("is-card-ready");
+        });
+      });
+      return;
+    }
+
+    pageFadeGroups.forEach(function (group) {
+      group.root.classList.add("is-intro-pending");
+
+      group.items.forEach(function (item) {
+        if (!(item instanceof HTMLElement)) return;
+        if (item.classList.contains("is-card-ready")) return;
+
+        if (!("IntersectionObserver" in window)) {
+          item.classList.add("is-card-ready");
+          return;
+        }
+
+        const observer = new IntersectionObserver(
+          function (entries) {
+            if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+            if (!entries.some(function (entry) { return entry.intersectionRatio >= 0.2; })) return;
+            item.classList.add("is-card-ready");
+            observer.disconnect();
+          },
+          { threshold: [0.2], rootMargin: "0px 0px -6% 0px" }
+        );
+
+        observer.observe(item);
+        pageFadeObservers.push(observer);
+      });
+    });
+  }
+
   function setupMobileExploreIntro() {
     if (!(exploreIntroRoot instanceof HTMLElement) || exploreIntroTargets.length === 0) return;
 
@@ -1313,6 +1358,7 @@
   refreshOffersIntro();
   refreshServiceHeroIntro();
   refreshServiceCardIntros();
+  refreshPageFadeGroups();
   setNavOpen(false);
   scrollToHashTarget();
 
@@ -1329,6 +1375,7 @@
       }
       refreshOffersIntro();
       refreshServiceCardIntros();
+      refreshPageFadeGroups();
     }, 120);
   });
 
@@ -1397,6 +1444,7 @@
       refreshOffersIntro();
       refreshServiceHeroIntro();
       refreshServiceCardIntros();
+      refreshPageFadeGroups();
       saveState();
     });
   });

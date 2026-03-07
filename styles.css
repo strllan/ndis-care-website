@@ -1100,6 +1100,20 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   animation-delay: var(--offers-delay, 0ms);
 }
 
+.page-fade-group.is-intro-pending .page-fade-item {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(2.2rem);
+}
+
+.page-fade-group.is-intro-pending .page-fade-item.is-card-ready {
+  visibility: visible;
+  pointer-events: auto;
+  animation: exploreCardIn 1100ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation-delay: var(--page-fade-delay, 0ms);
+}
+
 @keyframes exploreCardIn {
   from {
     opacity: 0;
