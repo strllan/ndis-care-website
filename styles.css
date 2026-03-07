@@ -431,7 +431,7 @@ main {
 .site-nav__services-option--alert::before {
   content: "NEW";
   position: absolute;
-  top: -0.52rem;
+  top: -0.36rem;
   left: 0.6rem;
   display: inline-flex;
   align-items: center;
