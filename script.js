@@ -64,16 +64,16 @@
     const LANGUAGE_STORAGE_KEY = "ndisCarerLanguage";
     const assetBase = getAssetBase();
     const languageOptions = [
-      { code: "en", label: "English", flagFile: "australia.png" },
-      { code: "zh-CN", label: "Chinese", flagFile: "china.png" },
-      { code: "ar", label: "Arabic", flagFile: "saudi_arabia.png" },
-      { code: "it", label: "Italian", flagFile: "italy.png" },
-      { code: "fr", label: "French", flagFile: "france.png" },
-      { code: "el", label: "Greek", flagFile: "greece.png" },
-      { code: "hi", label: "Hindi", flagFile: "india.png" },
-      { code: "es", label: "Spanish", flagFile: "spain.png" },
-      { code: "vi", label: "Vietnamese", flagFile: "vietnam.png" },
-      { code: "ne", label: "Nepali", flagFile: "nepal.png" }
+      { code: "en", label: "English", flagFile: "languages/australia.png" },
+      { code: "zh-CN", label: "Chinese", flagFile: "languages/china.png" },
+      { code: "ar", label: "Arabic", flagFile: "languages/saudi_arabia.png" },
+      { code: "it", label: "Italian", flagFile: "languages/italy.png" },
+      { code: "fr", label: "French", flagFile: "languages/france.png" },
+      { code: "el", label: "Greek", flagFile: "languages/greece.png" },
+      { code: "hi", label: "Hindi", flagFile: "languages/india.png" },
+      { code: "es", label: "Spanish", flagFile: "languages/spain.png" },
+      { code: "vi", label: "Vietnamese", flagFile: "languages/vietnam.png" },
+      { code: "ne", label: "Nepali", flagFile: "languages/nepal.png" }
     ];
     const translationCache = new Map();
     const textEntries = [];

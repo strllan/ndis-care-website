@@ -907,6 +907,13 @@ body.a11y-reduce-motion .home-hero-slider__slide {
   background: linear-gradient(135deg, #edf3f8, #dfe9f2);
 }
 
+.offer-media-image {
+  width: 100%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: #e7eff7;
+}
+
 .offers-card h3 {
   margin: 0;
   font-size: 1.03rem;
