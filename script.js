@@ -34,7 +34,7 @@
   const heroSliderSlides = Array.from(document.querySelectorAll(".home-hero-slider__slide")).filter(function (slide) {
     return slide instanceof HTMLElement;
   });
-  const HERO_SLIDE_HOLD_MS = 2500;
+  const HERO_SLIDE_HOLD_MS = 7000;
   const HERO_SLIDE_FADE_MS = 1000;
   const exploreIntroRoot = document.querySelector(".home-explore");
   const offersIntroRoot = document.querySelector(".home-offers");
