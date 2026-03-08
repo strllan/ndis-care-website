@@ -2529,6 +2529,12 @@ body.a11y-reduce-motion .home-hero-slider__slide {
     border-radius: 0.9rem;
   }
 
+  /* Defer heavy below-the-fold rendering on the About page for faster mobile paint. */
+  #rights-and-complaints {
+    content-visibility: auto;
+    contain-intrinsic-size: 1500px;
+  }
+
   .home-hero-main {
     min-height: clamp(34rem, 82vh, 47rem);
     padding: 2.4rem 0;

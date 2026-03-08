@@ -565,7 +565,8 @@
   function refreshHeroSliderMotion() {
     if (heroSliderSlides.length === 0) return;
     const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
-    if (motionDisabled) {
+    const isMobileViewport = window.innerWidth <= 700;
+    if (motionDisabled || isMobileViewport) {
       stopHeroSlider(true);
       return;
     }
@@ -632,6 +633,7 @@
         window.clearTimeout(exploreRefreshTimer);
       }
       exploreRefreshTimer = window.setTimeout(function () {
+        refreshHeroSliderMotion();
         refreshExploreIntro();
         refreshOffersIntro();
         refreshServiceCardIntros();
@@ -1055,7 +1057,8 @@
 
     disconnectPageFadeObservers();
 
-    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches;
+    const isMobileViewport = window.innerWidth <= 700;
+    const motionDisabled = state.reduceMotion || prefersReducedMotionQuery.matches || isMobileViewport;
     if (motionDisabled) {
       pageFadeGroups.forEach(function (group) {
         group.root.classList.remove("is-intro-pending");
