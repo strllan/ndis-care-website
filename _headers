@@ -7,6 +7,12 @@
 /script.js
   Cache-Control: public, max-age=604800
 
+/analytics.js
+  Cache-Control: public, max-age=604800
+
+/analytics-config.js
+  Cache-Control: public, max-age=3600
+
 /robots.txt
   Cache-Control: public, max-age=3600
 
