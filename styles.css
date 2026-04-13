@@ -71,9 +71,9 @@ body.services-menu-open .site-shell::after{
   content:"";
   position:fixed;
   inset:9.9rem 0 0;
-  background:linear-gradient(180deg,rgba(246,250,253,.38),rgba(225,237,246,.3));
-  -webkit-backdrop-filter:blur(26px) saturate(1.05);
-  backdrop-filter:blur(26px) saturate(1.05);
+  background:rgba(236,244,250,.2);
+  -webkit-backdrop-filter:blur(10px) saturate(1.02);
+  backdrop-filter:blur(10px) saturate(1.02);
   z-index:18;
   pointer-events:none;
 }
@@ -89,15 +89,15 @@ body.services-menu-open .site-shell::after{
   right:0;
   width:100%;
   max-width:none;
-  top:5.45rem;
+  top:calc(var(--header-offset) - 1px);
   padding:1.25rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.4rem;
-  border-top:1px solid rgba(197,217,231,.76);
-  border-bottom:1px solid rgba(197,217,231,.92);
+  border-top:0;
+  border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
-  background:rgba(251,254,255,.92);
-  -webkit-backdrop-filter:blur(28px) saturate(1.12);
-  backdrop-filter:blur(28px) saturate(1.12);
-  box-shadow:0 24px 60px rgba(8,31,50,.12);
+  background:rgba(246,252,255,.94);
+  -webkit-backdrop-filter:blur(10px) saturate(1.04);
+  backdrop-filter:blur(10px) saturate(1.04);
+  box-shadow:0 16px 34px rgba(8,31,50,.08);
   grid-template-columns:repeat(6,minmax(0,1fr));
   gap:.4rem 1rem;
   align-items:stretch;
