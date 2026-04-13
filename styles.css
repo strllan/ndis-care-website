@@ -90,7 +90,7 @@ body.services-menu-open .site-shell::after{
   width:100%;
   max-width:none;
   top:calc(var(--header-offset) - 1px);
-  padding:1.25rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.4rem;
+  padding:.45rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
@@ -247,8 +247,9 @@ body.services-menu-open .site-shell::after{
 
 @media (max-width:76rem){
   .site-nav__services-menu{
+    padding-top:.4rem;
     padding-inline:max(1.1rem,calc((100vw - 60rem)/2 + 1.1rem));
-    grid-template-columns:repeat(3,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   }
 }
 
