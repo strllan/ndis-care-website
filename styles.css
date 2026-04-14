@@ -83,13 +83,17 @@ body.services-menu-open .site-shell::after{
   z-index:46;
 }
 
+body.services-menu-open .site-header{
+  border-bottom-color:transparent;
+}
+
 .site-nav__services-menu{
   position:fixed;
   left:0;
   right:0;
   width:100%;
   max-width:none;
-  top:calc(var(--header-offset) - .38rem);
+  top:calc(var(--header-offset) - .52rem);
   padding:.22rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
