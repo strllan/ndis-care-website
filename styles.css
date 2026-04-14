@@ -510,3 +510,39 @@ body{
 .footer-attribution{
   color:#d8b7ff;
 }
+
+/* Purple image tint pass */
+.home-hero-slider__track{
+  background:#1f1430;
+}
+
+.home-hero-slider__slide{
+  background-color:#24163a;
+}
+
+.home-hero-main::before{
+  background:linear-gradient(118deg,rgba(33,17,55,.82) 0,rgba(47,22,74,.68) 48%,rgba(84,33,124,.58) 100%);
+  border-top-color:rgba(220,197,245,.28);
+  border-bottom-color:rgba(220,197,245,.28);
+}
+
+.offers-card::before{
+  background:linear-gradient(150deg,rgba(28,16,45,.52) 0,rgba(46,22,70,.45) 55%,rgba(100,49,147,.3) 100%);
+}
+
+.offer-media-placeholder{
+  background:#24163a;
+}
+
+.offer-media-image{
+  filter:saturate(1.01) brightness(.84) hue-rotate(16deg);
+}
+
+.service-hero.section--alt::before{
+  background:#24163a var(--service-hero-bg,none) center center/cover no-repeat;
+  filter:blur(8px) saturate(1.01) brightness(.82) hue-rotate(16deg);
+}
+
+.service-hero.section--alt::after{
+  background:linear-gradient(118deg,rgba(31,17,51,.72) 0,rgba(44,22,69,.58) 48%,rgba(102,47,150,.42) 100%);
+}
