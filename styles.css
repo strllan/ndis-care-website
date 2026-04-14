@@ -84,7 +84,7 @@ body.services-menu-open .site-shell::after{
 }
 
 body.services-menu-open .site-header{
-  background:rgba(246,252,255,.94);
+  background:rgba(255,255,255,.96);
   -webkit-backdrop-filter:blur(6px) saturate(1.03);
   backdrop-filter:blur(6px) saturate(1.03);
   border-bottom-color:transparent;
@@ -101,7 +101,7 @@ body.services-menu-open .site-header{
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
-  background:rgba(246,252,255,.97);
+  background:rgba(255,255,255,.97);
   -webkit-backdrop-filter:blur(6px) saturate(1.03);
   backdrop-filter:blur(6px) saturate(1.03);
   box-shadow:0 16px 34px rgba(8,31,50,.08);
@@ -114,7 +114,7 @@ body.services-menu-open .site-header{
   transform-origin:top center;
   clip-path:inset(0 0 94% 0);
   opacity:0;
-  transition:clip-path 380ms cubic-bezier(.2,.9,.22,1),transform 380ms cubic-bezier(.2,.9,.22,1),opacity 180ms ease,visibility 0s linear 380ms;
+  transition:clip-path 90ms cubic-bezier(.2,.9,.22,1),transform 90ms cubic-bezier(.2,.9,.22,1),opacity 70ms ease,visibility 0s linear 90ms;
 }
 
 .site-nav__services-dropdown.is-open .site-nav__services-menu{
@@ -431,8 +431,8 @@ body{
 }
 
 .site-header{
-  background:rgba(250,246,255,.82);
-  border-bottom-color:rgba(214,195,236,.8);
+  background:rgba(255,255,255,.9);
+  border-bottom-color:rgba(214,195,236,.52);
 }
 
 .site-nav a:not(.button):focus-visible,
@@ -484,6 +484,22 @@ body{
 .button--ghost:hover{
   color:var(--primary-strong);
   background:#f7f0ff;
+}
+
+.offers-card__button{
+  background:rgba(245,252,255,.16);
+  background-image:none;
+  border:1px solid rgba(233,247,255,.66);
+  color:#f5fbff;
+  box-shadow:0 6px 16px rgba(11,34,50,.2);
+}
+
+.offers-card__button:focus-visible,
+.offers-card__button:hover{
+  background:rgba(255,255,255,.22);
+  background-image:none;
+  color:#fff;
+  box-shadow:0 10px 22px rgba(11,34,50,.24);
 }
 
 .hero__card,
