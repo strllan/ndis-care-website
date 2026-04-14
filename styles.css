@@ -89,8 +89,8 @@ body.services-menu-open .site-shell::after{
   right:0;
   width:100%;
   max-width:none;
-  top:calc(var(--header-offset) - 1px);
-  padding:.45rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
+  top:calc(var(--header-offset) - .38rem);
+  padding:.22rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
@@ -382,4 +382,14 @@ body.services-menu-open .site-shell::after{
   .section__heading h1{
     font-size:clamp(1.28rem, 6.2vw, 1.64rem);
   }
+}
+
+html,
+body{
+  max-width:100%;
+  overflow-x:clip;
+}
+
+.site-shell{
+  overflow-x:clip;
 }
