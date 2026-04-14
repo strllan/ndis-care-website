@@ -97,7 +97,7 @@ body.services-menu-open .site-header{
   width:100%;
   max-width:none;
   top:calc(var(--header-offset) - .52rem);
-  padding:.22rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
+  padding:.72rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
@@ -139,7 +139,7 @@ body.services-menu-open .site-header{
   background:transparent;
   color:var(--text);
   text-decoration:none;
-  box-shadow:none;
+  box-shadow:inset 0 0 0 1px rgba(188,157,229,.42);
   opacity:0;
   transform:translateY(-.8rem);
   transition:opacity 220ms ease,transform 360ms cubic-bezier(.2,.88,.22,1),background-color 150ms ease;
@@ -151,7 +151,7 @@ body.services-menu-open .site-header{
   inset:.12rem;
   border-radius:.88rem;
   background:linear-gradient(145deg,rgba(237,228,248,.72),rgba(245,240,251,.4));
-  border:1px solid rgba(213,194,236,.42);
+  border:1px solid rgba(199,171,235,.58);
   opacity:0;
   transform:scale(.985);
   transition:opacity 150ms ease,transform 180ms ease,border-color 150ms ease,background-color 150ms ease;
