@@ -131,10 +131,10 @@ body.services-menu-open .site-header{
   display:grid;
   grid-template-columns:2.6rem minmax(0,1fr);
   align-items:center;
-  gap:.78rem;
-  min-height:4.35rem;
-  padding:.6rem .15rem;
-  border-radius:0;
+  gap:.82rem;
+  min-height:4.1rem;
+  padding:.72rem .5rem;
+  border-radius:.95rem;
   border:0;
   background:transparent;
   color:var(--text);
@@ -143,6 +143,19 @@ body.services-menu-open .site-header{
   opacity:0;
   transform:translateY(-.8rem);
   transition:opacity 220ms ease,transform 360ms cubic-bezier(.2,.88,.22,1),background-color 150ms ease;
+}
+
+.site-nav .site-nav__services-option::before{
+  content:"";
+  position:absolute;
+  inset:.12rem;
+  border-radius:.88rem;
+  background:linear-gradient(145deg,rgba(237,228,248,.72),rgba(245,240,251,.4));
+  border:1px solid rgba(213,194,236,.42);
+  opacity:0;
+  transform:scale(.985);
+  transition:opacity 150ms ease,transform 180ms ease,border-color 150ms ease,background-color 150ms ease;
+  z-index:-1;
 }
 
 .site-nav__services-option-icon{
@@ -184,13 +197,19 @@ body.services-menu-open .site-header{
 
 .site-nav__services-option:hover,
 .site-nav__services-option:focus-visible{
-  background:rgba(226,238,247,.28);
   transform:translateY(0);
+}
+
+.site-nav__services-option:hover::before,
+.site-nav__services-option:focus-visible::before{
+  opacity:1;
+  transform:scale(1);
+  border-color:rgba(184,151,226,.58);
 }
 
 .site-nav__services-option:hover .site-nav__services-option-icon,
 .site-nav__services-option:focus-visible .site-nav__services-option-icon{
-  background:linear-gradient(145deg,rgba(205,229,244,.98),rgba(170,211,238,.95));
+  background:linear-gradient(145deg,rgba(223,208,245,.98),rgba(193,166,235,.95));
 }
 
 .site-nav__services-option:nth-child(1),
@@ -580,4 +599,20 @@ body{
 
 .service-hero.section--alt::after{
   background:linear-gradient(118deg,rgba(43,20,69,.72) 0,rgba(68,29,104,.58) 48%,rgba(132,69,184,.42) 100%);
+}
+
+.service-hero-media{
+  filter:saturate(1.03) brightness(.87) hue-rotate(20deg);
+}
+
+.service-hero-media-card{
+  border-color:rgba(197,170,230,.66);
+}
+
+.service-hero-media-card::before{
+  background:linear-gradient(125deg,rgba(34,15,56,.7) 0,rgba(58,24,88,.58) 56%,rgba(133,73,188,.42) 100%);
+}
+
+.service-hero-overlay .eyebrow{
+  color:#ccb0ff;
 }
