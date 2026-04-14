@@ -7,7 +7,7 @@
   .top-bar__inner{padding:.22rem 0}
   .site-header__inner{row-gap:.4rem;padding:.42rem 0}
   .brand{gap:.5rem}
-  .brand__logo{width:2.55rem;height:2.55rem;border-radius:.62rem}
+  .brand__logo{width:2.9rem;height:2.9rem;border-radius:.72rem}
   .brand__name{font-size:clamp(1.06rem,4.5vw,1.3rem)}
   .brand__legal{font-size:.78rem;line-height:1.25}
   .nav-toggle{width:2.4rem;height:2.4rem;border-radius:.62rem}
@@ -435,6 +435,17 @@ body{
   border-bottom-color:rgba(214,195,236,.52);
 }
 
+.brand__logo{
+  width:3.55rem;
+  height:3.55rem;
+  border-radius:.86rem;
+}
+
+.brand__logo img{
+  object-fit:contain;
+  transform:scale(1.08);
+}
+
 .site-nav a:not(.button):focus-visible,
 .site-nav a:not(.button):hover,
 .site-nav a[aria-current=page]:not(.button),
@@ -529,17 +540,17 @@ body{
 
 /* Purple image tint pass */
 .home-hero-slider__track{
-  background:#1f1430;
+  background:#26193a;
 }
 
 .home-hero-slider__slide{
-  background-color:#24163a;
+  background-color:#2b1d3f;
 }
 
 .home-hero-main::before{
-  background:linear-gradient(118deg,rgba(33,17,55,.82) 0,rgba(47,22,74,.68) 48%,rgba(84,33,124,.58) 100%);
-  border-top-color:rgba(220,197,245,.28);
-  border-bottom-color:rgba(220,197,245,.28);
+  background:linear-gradient(118deg,rgba(33,17,55,.68) 0,rgba(47,22,74,.54) 48%,rgba(84,33,124,.42) 100%);
+  border-top-color:rgba(220,197,245,.2);
+  border-bottom-color:rgba(220,197,245,.2);
 }
 
 .offers-card::before{
