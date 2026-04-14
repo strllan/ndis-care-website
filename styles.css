@@ -557,12 +557,20 @@ body{
   background:linear-gradient(150deg,rgba(28,16,45,.52) 0,rgba(46,22,70,.45) 55%,rgba(100,49,147,.3) 100%);
 }
 
+.services-page .offers-card::before{
+  background:linear-gradient(150deg,rgba(39,18,58,.5) 0,rgba(68,30,101,.44) 55%,rgba(136,74,186,.28) 100%);
+}
+
 .offer-media-placeholder{
   background:#24163a;
 }
 
 .offer-media-image{
   filter:saturate(1.01) brightness(.84) hue-rotate(16deg);
+}
+
+.services-page .offer-media-image{
+  filter:saturate(1.02) brightness(.84) hue-rotate(26deg);
 }
 
 .service-hero.section--alt::before{
