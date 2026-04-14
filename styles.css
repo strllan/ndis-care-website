@@ -400,3 +400,113 @@ body{
 .site-shell{
   overflow-x:clip;
 }
+
+/* Purple theme refresh */
+:root{
+  --bg:#f7f2fc;
+  --bg-alt:#eee4fa;
+  --surface:#ffffff;
+  --surface-strong:#e8d8f7;
+  --text:#1f1830;
+  --muted:#675b7f;
+  --border:#d8c7ed;
+  --primary:#7b3ff2;
+  --primary-strong:#5e23c6;
+  --accent:#a855f7;
+}
+
+body{
+  background:radial-gradient(circle at top right,#ead8ff 0,#f7f2fc 38%,#fcf9ff 100%);
+}
+
+.top-bar{
+  background:#f0e4ff;
+  border-bottom-color:#dcc4f2;
+}
+
+.top-bar__badge{
+  border-color:#d7c0ef;
+  background:#fcf8ff;
+  color:#382950;
+}
+
+.site-header{
+  background:rgba(250,246,255,.82);
+  border-bottom-color:rgba(214,195,236,.8);
+}
+
+.site-nav a:not(.button):focus-visible,
+.site-nav a:not(.button):hover,
+.site-nav a[aria-current=page]:not(.button),
+.site-nav__services-trigger:focus-visible,
+.site-nav__services-trigger:hover,
+.site-nav__services-trigger[aria-current=page],
+.site-nav__services-dropdown.is-open .site-nav__services-trigger,
+.language-switcher__toggle:focus-visible,
+.language-switcher__toggle:hover,
+.language-switcher__option:focus-visible,
+.language-switcher__option:hover,
+.nav-toggle:focus-visible,
+.nav-toggle:hover{
+  background:#f3eaff;
+}
+
+.site-nav__services-dropdown.is-open .site-nav__services-trigger{
+  box-shadow:0 0 0 1px rgba(123,63,242,.16),0 0 18px rgba(123,63,242,.18);
+}
+
+.site-nav a.site-nav__cta,
+.site-nav a.site-nav__referral,
+.button{
+  background:linear-gradient(135deg,#b06cff,#7b3ff2);
+  box-shadow:0 8px 18px rgba(123,63,242,.26);
+}
+
+.site-nav a.site-nav__cta:focus-visible,
+.site-nav a.site-nav__cta:hover,
+.site-nav a.site-nav__cta[aria-current=page],
+.site-nav a.site-nav__referral:focus-visible,
+.site-nav a.site-nav__referral:hover,
+.button:focus-visible,
+.button:hover{
+  background:linear-gradient(135deg,#a45eff,#7035ec);
+  box-shadow:0 10px 22px rgba(123,63,242,.3);
+}
+
+.button--ghost{
+  background:#fff;
+  color:var(--primary-strong);
+  border-color:var(--border);
+  box-shadow:none;
+}
+
+.button--ghost:focus-visible,
+.button--ghost:hover{
+  color:var(--primary-strong);
+  background:#f7f0ff;
+}
+
+.hero__card,
+.hero__content,
+.contact-card,
+.form-card,
+.info-panel,
+.accordion,
+.email-fallback{
+  border-color:rgba(216,199,237,.92);
+}
+
+.section--offers{
+  background:linear-gradient(180deg,rgba(238,228,250,.5),rgba(247,242,252,.76));
+  border-top-color:rgba(216,199,237,.58);
+  border-bottom-color:rgba(216,199,237,.5);
+}
+
+.site-footer{
+  background:#1b1230;
+}
+
+.site-footer a,
+.footer-attribution{
+  color:#d8b7ff;
+}
