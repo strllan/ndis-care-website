@@ -96,8 +96,8 @@ body.services-menu-open .site-header{
   right:0;
   width:100%;
   max-width:none;
-  top:calc(var(--header-offset) - .52rem);
-  padding:.72rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
+  top:calc(var(--header-offset) - .34rem);
+  padding:.58rem max(1.4rem,calc((100vw - 82rem)/2 + 1.4rem)) 1.2rem;
   border-top:0;
   border-bottom:1px solid rgba(188,210,226,.8);
   border-radius:0;
@@ -514,6 +514,19 @@ body{
 .button--ghost:hover{
   color:var(--primary-strong);
   background:#f7f0ff;
+}
+
+.form-field input,
+.form-field textarea{
+  border-color:rgba(170,129,232,.72);
+  background:#fdfaff;
+}
+
+.form-field input:focus-visible,
+.form-field textarea:focus-visible{
+  border-color:var(--primary-strong);
+  box-shadow:0 0 0 3px rgba(123,63,242,.18);
+  background:#fff;
 }
 
 .offers-card__button{
