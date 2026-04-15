@@ -422,6 +422,7 @@ body{
 
 /* Purple theme refresh */
 :root{
+  --font-scale:1.01;
   --bg:#f7f2fc;
   --bg-alt:#eee4fa;
   --surface:#ffffff;
