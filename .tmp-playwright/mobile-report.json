@@ -1,0 +1,100 @@
+{
+  "routes": [
+    {
+      "name": "home",
+      "path": "/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 16,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    },
+    {
+      "name": "about",
+      "path": "/about-us/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 0,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    },
+    {
+      "name": "services",
+      "path": "/services/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 10,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    },
+    {
+      "name": "service-detail",
+      "path": "/services/assist-travel-transport/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 0,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    },
+    {
+      "name": "referral",
+      "path": "/referral/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 0,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    },
+    {
+      "name": "careers",
+      "path": "/careers/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "bodyScrollWidth": 390,
+      "bodyClientWidth": 390,
+      "headerHeight": 67.5,
+      "topBarHeight": 24.546875,
+      "navDisplay": "none",
+      "hiddenCards": 0,
+      "a11yBottom": 652.640625,
+      "viewportHeight": 664
+    }
+  ],
+  "menuMetrics": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "navOpen": true,
+    "navDisplay": "flex",
+    "triggerCount": 19,
+    "servicesMenuDisplay": "none"
+  },
+  "homeMid": {
+    "hiddenCards": 6,
+    "y": 1568
+  }
+}
